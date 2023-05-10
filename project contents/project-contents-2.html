@@ -51,7 +51,34 @@
                     <li>Define a "box" of sentences in which the characters' names are mentioned between these sentences. If this condition is met, we can infer that the characters mentioned in these sentences have a relationship with each other.</li>
                     <li>Use Pyvis, a Python library for visualizing networks, to plot the relationships between characters and communities. This will allow us to gain a better understanding of the complex web of relationships that exists within The Witcher series.</li>
                     </ul>
-        </div>
+                    <br>
+                <h3>Extract character names</h3>
+                    <p> <a href="https://witcher.fandom.com/wiki/Category:Characters_in_the_stories" target="_blank">This Witcher fandom</a>  had created all the Characters in the story. I will use Selenium to scrap all character names and the books.</p>
+                    <h4> Number of characters</h4>
+                    <img class="plot-image" src="../images/subpage2/2.png" />
+                    <h4>Identify and classify characters' named entities</h4>
+                    <p>I have located a valuable resource on <a href="https://github.com/dworschak/Witcher/tree/master/RESSOURCES/_books/text" target="_blank">GitHub</a>, which includes text files of all books in the Witcher series. My next step will involve importing these files for further processing. I plan to utilize Named Entity Recognition (NER) for identifying and classifying the named entities of all characters present within these texts.</p>
+                    <p>The Netflix series, The Witcher 2, draws its plot from The Blood of Elves Novel. Therefore, I will focus our examination of character's named entities on this particular book.</p>
+                    <img class="plot-image" src="../images/subpage2/3.png" alt="Named Entities Visualization" />
+                    <br>
+                <h3>Create relationships</h3>
+                    <p>Now we come to an important part. I will extract the character entities from each sentence within a window of <strong>five</strong> sentences. This method involves moving a "box" over the text to find and establish connections between characters. As illustrated in the images below, we have established one relationship between Geralt and Yennefer as depicted in the first image. In the second image, we have created three relationships, intricately connecting Geralt, Yennefer, and Cirilla. </p>  
+                    <img class="plot-image" src="../images/subpage2/4.png" />
+                    <br>
+                    <img class="plot-image" src="../images/subpage2/5.png" />
+                    <p>After removing duplicates and sorting the characters alphabetically, we will then establish relationships between adjacent characters.</p>
+                    <br>
+                <h3>Graph analysis and visualization</h3>
+                    <p>Utilizing the NetworkX library in Python, I have plotted the relationships between the characters to visually represent their connections.</p>
+                    <img class="plot-image" src="../images/subpage2/6.png" />
+                    <p>After incorporating node "size" and centrality measures, I used the Pyvis library to create interactive plots, further enhancing the visualization of character relationships.</p>
+                    <img class="heading-image" src="../images/subpage2/7.png" />
+                <h3>Conclusion</h3>
+                    <p>In conclusion, our research delves into the intricate and intriguing universe of The Witcher 2 series, identifying and analyzing its most critical characters and communities. Employing a mix of qualitative analysis and data visualization using Pyvis, we have discerned that Geralt, Ciri, and Yennefer are the most pivotal characters in the series.</p>
+                    <p>These characters are not only central to the narrative but also play vital roles in molding the various communities within this universe. By visualizing the relationships among characters, we have obtained a deeper understanding of the complex interconnections and alliances that underpin this richly woven world. Moreover, our analysis has yielded valuable insights into the dynamics and complexities of the diverse communities in The Witcher 2 series, underscoring the significance of these key characters in the larger narrative context.</p>
+                    <br>
+                    <p>The entire script and further explaination for this article can be found at my <a href="https://deepnote.com/@my_project/The-Witcher-8a0d588b-f189-43eb-ac57-807e5edd226b" target="_blank">Deepnote</a> and Github page.</p>       
+                </div>
     </section>
     
 
