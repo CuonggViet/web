@@ -1,0 +1,72 @@
+/* Heading styles */
+.projects .content-container {
+  max-width: 80%; /* Adjust the value as needed */
+  margin: 0 auto; /* Center the container */
+}
+
+.projects h2 {
+  font-size: 50px; /* Adjust the value as needed */
+  font-weight: bold;
+  margin-bottom: 40px;
+}
+  
+  .projects h2 span {
+    color: #1a73e8;
+  }
+  .projects .heading-image {
+    width: 110%;
+    max-width: 1000px; 
+    height: auto;
+    display: block;
+    margin: 20px auto;
+  }
+  
+  .projects h3 {
+    font-size: 35px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .projects h4 {
+    margin-top: 20px;
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  
+  /* Text styles */
+  .projects p {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .projects li {
+    font-size: 16px;
+    margin-bottom: 8px;
+    margin-left: 60px;
+  }
+  
+  /* Link styles */
+  .projects a {
+    color: #1a73e8;
+    text-decoration: none;
+  }
+  
+  .projects a:hover {
+    text-decoration: underline;
+  }
+  .projects .plot-image {
+    width: 60%;
+    max-width: 80%; 
+    height: auto;
+    display: block;
+    margin: 20px auto;
+  }
+
+  .projects .plot-image-cleaning {
+    width: 28%;
+    max-width: 80%; 
+    height: 20%;
+    display: block;
+    margin: 20px auto;
+  }

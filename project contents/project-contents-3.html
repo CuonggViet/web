@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Viet Cuong Truong</title>
+    <link rel="shortcut icon" href="../images/a.jpg" type="image/x-icon">
+    <link rel="icon" href="../images/a" type="image/x-icon">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../project contents/subpage3-style.css">
+
+</head>
+
+<body>
+
+    <header class="header">
+        <a href="../" class="logo">Portfolio.</a>
+
+        <div class='bx bx-menu' id="menu-icon"></div>
+
+        <nav class="navbar">
+            <a href="../#home">Home</a>
+            <a href="../#about">About</a>
+            <a href="../#education">Education</a>
+            <a href="../#portfolio" class="active">Projects</a>
+            <a href="../#contact">Contact</a>
+        </nav>
+    </header>
+
+    <section class="projects" id="projects">
+        <div class="content-container">
+        <h2 class="heading"> Clustering for<span> Effective Marketing Strategy</span></h2>
+        <img class="heading-image" src="../images/subpage3/Cover image - Waffle plot .png" alt="#" />
+        <!-- Add your project content here -->
+        <br>
+        <br>
+            <h3>Introduction</h3>
+                <p>Customer Personality Analysis is a comprehensive analysis of an organization's ideal clients. It aids businesses in gaining a better understanding of their customers and makes it easier for them to tailor their products to the specific needs, behaviours, and concerns of various customer types.</p>
+                <p>Analysing the personalities of customers enables a business to modify its product based on its target customers from various customer segments. For instance, instead of spending money to market a new product to every customer in the company's database, the company can analyse which customer segment is most likely to purchase the product and focus marketing efforts on that segment alone.</p>
+                <br>
+                <p><strong>Objectives:</strong></p>
+                <p>
+                    In this project, we will be utilizing  <a href="https://www.kaggle.com/datasets/imakash3011/customer-personality-analysis">this dataset</a> to perform clustering analysis. The aim is to identify distinct clusters of customers based on their personality traits and characteristics. This will allow us to develop tailored marketing strategies for each cluster, optimizing our efforts to effectively target and engage different customer segments. Our objectives include:
+                </p>
+                <ul>
+                    <li>Grouping customers into clusters using various clustering models.</li>
+                    <li>Perform interpretation and analysis of the groups (profiling) that have been created.</li>
+                    <li>Provide marketing suggestions based on profiling results and analysis conducted.</li>
+                </ul>
+                <br>
+                <p><strong>Clustering Models:</strong></p>
+                <ul>
+                    <li>Partition based (K-Means)</li>
+                    <li>Density based (DBSCAN)</li>
+                    <li>Hierarchical Clustering (Agglomerative)</li>
+                </ul>
+                <br>
+                <p><strong>Dataset Description:</strong></p>
+                <img class="plot-image" src="../images/subpage3/Data Description.png" />
+            
+           <h3>Data Cleaning</h3>
+                <p>Perform the following data cleaning and feature engineering steps:</p>
+                <ul>
+                        <li>Eliminate null values: Clean the dataset to make it more reliable.</li>
+                        <li>Derive "Age": Calculate the age of a customer from the "Year_Birth" field, which indicates the customer's birth year.</li>
+                        <li>Generate "Spent": Create a new feature to represent the total amount spent by a customer across different categories over two years.</li>
+                        <li>Create "Living_With": Use the "Marital_Status" field to identify the living situation of couples.</li>
+                        <li>Create "Children": Establish a feature to represent the total number of children in a household, including both kids and teenagers.</li>
+                        <li>Establish "Family_Size": Create a feature to indicate the total number of family members in a household.</li>
+                        <li>Introduce "Is_Parent": Implement a feature to indicate whether a customer is a parent.</li>
+                        <li>Simplify "Education": Divide this attribute into three categories to make it more manageable and understandable.</li>
+                        <li>Discard unnecessary features: Remove redundant features that could complicate the analysis and prediction process.</li>
+                        <li>Eliminate outliers: Remove outliers from the dataset to ensure more accurate statistical analyses and machine learning predictions.</li>                   
+                </ul>
+                <img class="plot-image-cleaning" src="../images/subpage3/data cleaning.png" />
+            
+            <h3>Data Preprocessing</h3>
+                <p>This section will perform some pre-processing before using clustering models.</p>
+                <p><strong> Dropping Variables</strong></p>
+                <p>The first stage is to remove variables that are not needed for the clustering process. In this case 'AcceptedCmp3', 'AcceptedCmp4', 'AcceptedCmp5', 'AcceptedCmp1','AcceptedCmp2', 'Complain', 'Response' will be removed.</p>
+                <br>
+                <p><strong>Scaling</strong></p>
+                <p>Our subsequent stage involves scaling the dataset. Scaling is of paramount importance as it handles the dispersion in the dataset, applies a linear transformation to convert the data into a specific range, and consequently enhances the effectiveness of clustering algorithms, resulting in more reliable clusters. Here, we will employ a standard scaler, which normalizes the features by subtracting the mean and scaling to unit variance, ensuring that the data attributes have a uniform scale.</p>
+                <br>
+                <p><strong>Hopkins Test</strong></p>
+                <p>The next step is to perform a statistical test using the Hopkins statistical test for the preprocessed dataset. This test measures the clustering tendency of data, or in other words, the extent to which meaningful clusters exist in the data set to be clustered.</p>
+
+                <p>The hypothesis of the Hopkins statistical test is as follows:</p>
+                <ul>
+                <li><strong>H0 (Null Hypothesis):</strong> The dataset is not uniformly distributed (contains meaningful clusters).</li>
+                <li><strong>H1 (Alternative Hypothesis):</strong> The dataset is uniformly distributed (lacks meaningful clusters).</li>
+                </ul>
+                
+                <p>The criteria for the Hopkins statistical test is:</p>
+                <p>If the value is between {0.7, ..., 0.99}, we accept H0, indicating the data has a high tendency to cluster.</p>
+                <img class="plot-image" src="../images/subpage3/Hopkin test.png" />
+                <br>
+                <p><strong>Principal component analysis</strong></p>
+                <p>Principal Component Analysis (PCA) is a technique used in unsupervised machine learning approaches, such as clustering. Its main purpose is to transform high-dimensional data into a smaller number of dimensions, while preserving as much significant information as possible. The use of PCA prior to deploying a clustering algorithm helps in reducing the dimensionality, minimizing data noise, and lessening computational cost.</p>
+
+                <p>In this particular project, we'll be reducing the number of features to two dimensions. This reduction enables us to effectively visualize the clustering outcomes.</p>
+                <img class="plot-image" src="../images/subpage3/PCA.png" />     
+                <br>
+
+            <h3>Clustering</h3>
+                <p>K-means clustering is a straightforward yet potent algorithm utilized in unsupervised learning to tackle clustering issues. The methodology involves segregating a given dataset into a certain number of clusters, denoted by "k". These clusters are marked as points, and all observations or data points are associated with their closest cluster. Subsequent to this, calculations and adjustments are performed. The process is then reiterated with these fresh adjustments until the desired result is obtained.</p>
+                <p style="text-align:center; font-size:smaller;"><em>🖼 K-Means Clustering by Pranshu Sharma</em></p>
+                <p>Prior to implementing K-Means, the first step is to determine the optimal number of clusters. This can be achieved using the elbow score. In addition, the Calinski-Harabasz index will be employed to help establish the ideal number of clusters.</p>
+            
+
+            
+
+
+            
+        </section>
+    
+
+    <footer class="footer">
+        <div class="footer-text">
+            <p>Copyright &copy; 2023 by Viet Cuong Truong | All Rights Reserved.</p>
+        </div>
+
+        <div class="footer-iconTop">
+            <a href="#projects"><i class='bx bx-up-arrow-alt'></i></a>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <script src="../js/script.js"></script>
+</body>
+
+</html>
