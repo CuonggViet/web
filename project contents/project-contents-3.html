@@ -43,7 +43,7 @@
                 <br>
                 <p><strong>Objectives:</strong></p>
                 <p>
-                    In this project, we will be utilizing  <a href="https://www.kaggle.com/datasets/imakash3011/customer-personality-analysis">this dataset</a> to perform clustering analysis. The aim is to identify distinct clusters of customers based on their personality traits and characteristics. This will allow us to develop tailored marketing strategies for each cluster, optimizing our efforts to effectively target and engage different customer segments. Our objectives include:
+                    In this project, we will be utilizing  <a href="https://www.kaggle.com/datasets/imakash3011/customer-personality-analysis"target="_blank">this dataset</a> to perform clustering analysis. The aim is to identify distinct clusters of customers based on their personality traits and characteristics. This will allow us to develop tailored marketing strategies for each cluster, optimizing our efforts to effectively target and engage different customer segments. Our objectives include:
                 </p>
                 <ul>
                     <li>Grouping customers into clusters using various clustering models.</li>
@@ -100,20 +100,44 @@
                 <br>
                 <p><strong>Principal component analysis</strong></p>
                 <p>Principal Component Analysis (PCA) is a technique used in unsupervised machine learning approaches, such as clustering. Its main purpose is to transform high-dimensional data into a smaller number of dimensions, while preserving as much significant information as possible. The use of PCA prior to deploying a clustering algorithm helps in reducing the dimensionality, minimizing data noise, and lessening computational cost.</p>
-
                 <p>In this particular project, we'll be reducing the number of features to two dimensions. This reduction enables us to effectively visualize the clustering outcomes.</p>
-                <img class="plot-image" src="../images/subpage3/PCA.png" />     
+                <img class="plot-evaluate" src="../images/subpage3/PCA.png" />     
                 <br>
 
             <h3>Clustering</h3>
-                <p>K-means clustering is a straightforward yet potent algorithm utilized in unsupervised learning to tackle clustering issues. The methodology involves segregating a given dataset into a certain number of clusters, denoted by "k". These clusters are marked as points, and all observations or data points are associated with their closest cluster. Subsequent to this, calculations and adjustments are performed. The process is then reiterated with these fresh adjustments until the desired result is obtained.</p>
-                <p style="text-align:center; font-size:smaller;"><em>🖼 K-Means Clustering by Pranshu Sharma</em></p>
+                <p><strong style="font-size:24px;">K-Means</strong></p>
+                <p>K-Means clustering is a straightforward yet potent algorithm utilized in unsupervised learning to tackle clustering issues. The methodology involves segregating a given dataset into a certain number of clusters, denoted by "k". These clusters are marked as points, and all observations or data points are associated with their closest cluster. Subsequent to this, calculations and adjustments are performed. The process is then reiterated with these fresh adjustments until the desired result is obtained.</p>
+                <img class="plot-image" src="../images/subpage3/K-Mean.png" />  
+                <p style="text-align:center; font-size:13px;"><em>🖼 K-Means Clustering by <a href="https://pranshu453.medium.com/k-means-clustering-simplified-in-python-ab57b8d629db"target="_blank">Pranshu Sharma</a></em></p>
                 <p>Prior to implementing K-Means, the first step is to determine the optimal number of clusters. This can be achieved using the elbow score. In addition, the Calinski-Harabasz index will be employed to help establish the ideal number of clusters.</p>
-            
+                <img class="plot-image" src="../images/subpage3/a.png" />
+                <p>According to the results of the elbow method and the Calinski Harabasz score, the optimal number of clusters for the K-Means algorithm is four. The subsequent steps will apply the optimal number of clusters, visualise the clusters distribution plot, and evaluate their performance using silhouette plots.</p>
+                <img class="plot-image" src="../images/subpage3/b.png" />
+                <p>The provided image depicts an analysis of the data clustered into four distinct groups: cluster 1, cluster 2, cluster 3, and cluster 4. These clusters account for 25.95%, 22.51%, 22.88%, and 28.66%, respectively, of the data points, demonstrating a relatively even distribution across the clusters.</p>
+                <p>In the silhouette plot, silhouette coefficient values for each cluster are displayed. All clusters are found to be higher than the average silhouette score, indicating that the clustering solution is suitable. In addition, the thickness of the silhouette plots reveals a similar range of variation across all clusters, indicating that the clustering solution is consistent. Notably, clusters 2 and 4 have a slightly thicker silhouette, indicating greater cohesion within these clusters.</p>
+                <p>The waffle chart at the bottom provides a clear visual representation of the customer distribution across clusters by displaying the percentage of customers in each cluster.</p>
+                <p>The quality of this clustering solution will be evaluated in the future using a variety of metrics, including the Davies-Bouldin index, silhouette score, and Calinski-Harabasz index.</p>
+                <img class="plot-evaluate" src="../images/subpage3/Kmeans Evaluate.png" />
+                <br>
+                <br>
 
-            
-
-
+                <p><strong style="font-size:24px;">DBScan</strong></p>
+                <p>DBSCAN (Density-Based Spatial Clustering of Applications with Noise) clusters points according to the minimum number of points and the Euclidean distance. It also identifies as outliers points in low-density regions. The two parameters of DBSCAN are MinPoints and Epsilon.</p>
+                <img class="plot-image" src="../images/subpage3/DBSCAN.png" />  
+                <p style="text-align:center; font-size:13px;"><em>🖼 DBScan Clustering by <a href="https://www.researchgate.net/figure/The-DBSCAN-algorithm-and-two-generated-clusters-There-are-three-types-of-points-as_fig2_342082665"target="_blank">David A. Bonneau</a></em></p>
+                <p>Before applying the DBSCAN algorithm, we must define the previously mentioned DBSCAN parameters. Since PCA has already been performed in two dimensions, we will use the default value (4) for MinPoint. For Epsilon values, we will determine the distance between each data point and its nearest neighbour using Nearest Neighbours, and then sort them before plotting them. Using the plot, we can then determine the greatest value at the graph's curve.</p>
+                <img class="plot-image" src="../images/subpage3/DBScan plot.png" />
+                <p>The subsequent step is to implement DBSCAN and evaluate the results based on the results of the maximum curvature and the previous MinPoint values.</p>
+                <img class="plot-image" src="../images/subpage3/DBscan 8 clusters.png" />
+                <p>From the implementation of DBSCAN, eight clusters are formed. Clusters 1 and 2 have more data points than other clusters. However, there are some outliers detected because some points are too far from the other data points (DBSCAN labelled those points as outliers with a -1 value). The next step is to evaluate the clustering quality provided by DBSCAN.</p>
+                <img class="plot-evaluate" src="../images/subpage3/DBSCAN Eva.png" />
+                <br>
+                <p>In summary, the DBSCAN clustering results show moderate performance according to Davies-Bouldin Index and Calinski Harabasz Index, but poor performance based on the Silhouette Score. This suggests that some data points might not have been correctly assigned to their clusters, leading to overlap between clusters.</p>
+                <br>
+                <br>
+                
+                <p><strong style="font-size:24px;">Hierarchical Clustering</strong></p>
+                <p>Hierarchical clustering organises data into a clustering tree. Hierarchical clustering begins with each data point being treated as a separate cluster. Then, it repeatedly identifies the two clusters that are most similar and merges them until all of the clusters have been merged together. The objective of hierarchical clustering is to generate a hierarchical series of nested clusters. Dendrograms will be utilised to visualise the evolution of groupings and determine the optimal cluster size. Using the generated dendograms, we then determine the greatest vertical distance that does not intersect any other clusters. After that, draw a horizontal threshold line at both ends. The optimal number of clusters equals the number of vertical lines traversing the horizontal line. In the example given below, the optimal number of clusters would be four.</p>
             
         </section>
     
