@@ -103,11 +103,12 @@
                 <p>In this particular project, we'll be reducing the number of features to two dimensions. This reduction enables us to effectively visualize the clustering outcomes.</p>
                 <img class="plot-evaluate" src="../images/subpage3/PCA.png" />     
                 <br>
+                <br>
 
             <h3>Clustering</h3>
                 <p><strong style="font-size:24px;">K-Means</strong></p>
                 <p>K-Means clustering is a straightforward yet potent algorithm utilized in unsupervised learning to tackle clustering issues. The methodology involves segregating a given dataset into a certain number of clusters, denoted by "k". These clusters are marked as points, and all observations or data points are associated with their closest cluster. Subsequent to this, calculations and adjustments are performed. The process is then reiterated with these fresh adjustments until the desired result is obtained.</p>
-                <img class="plot-image" src="../images/subpage3/K-Mean.png" />  
+                <img class="plot-example-image" src="../images/subpage3/K-Mean.png" />  
                 <p style="text-align:center; font-size:13px;"><em>🖼 K-Means Clustering by <a href="https://pranshu453.medium.com/k-means-clustering-simplified-in-python-ab57b8d629db"target="_blank">Pranshu Sharma</a></em></p>
                 <p>Prior to implementing K-Means, the first step is to determine the optimal number of clusters. This can be achieved using the elbow score. In addition, the Calinski-Harabasz index will be employed to help establish the ideal number of clusters.</p>
                 <img class="plot-image" src="../images/subpage3/a.png" />
@@ -123,7 +124,7 @@
 
                 <p><strong style="font-size:24px;">DBScan</strong></p>
                 <p>DBSCAN (Density-Based Spatial Clustering of Applications with Noise) clusters points according to the minimum number of points and the Euclidean distance. It also identifies as outliers points in low-density regions. The two parameters of DBSCAN are MinPoints and Epsilon.</p>
-                <img class="plot-image" src="../images/subpage3/DBSCAN.png" />  
+                <img class="plot-example-image" src="../images/subpage3/DBSCAN.png" />  
                 <p style="text-align:center; font-size:13px;"><em>🖼 DBScan Clustering by <a href="https://www.researchgate.net/figure/The-DBSCAN-algorithm-and-two-generated-clusters-There-are-three-types-of-points-as_fig2_342082665"target="_blank">David A. Bonneau</a></em></p>
                 <p>Before applying the DBSCAN algorithm, we must define the previously mentioned DBSCAN parameters. Since PCA has already been performed in two dimensions, we will use the default value (4) for MinPoint. For Epsilon values, we will determine the distance between each data point and its nearest neighbour using Nearest Neighbours, and then sort them before plotting them. Using the plot, we can then determine the greatest value at the graph's curve.</p>
                 <img class="plot-image" src="../images/subpage3/DBScan plot.png" />
@@ -135,10 +136,78 @@
                 <p>In summary, the DBSCAN clustering results show moderate performance according to Davies-Bouldin Index and Calinski Harabasz Index, but poor performance based on the Silhouette Score. This suggests that some data points might not have been correctly assigned to their clusters, leading to overlap between clusters.</p>
                 <br>
                 <br>
-                
+
                 <p><strong style="font-size:24px;">Hierarchical Clustering</strong></p>
                 <p>Hierarchical clustering organises data into a clustering tree. Hierarchical clustering begins with each data point being treated as a separate cluster. Then, it repeatedly identifies the two clusters that are most similar and merges them until all of the clusters have been merged together. The objective of hierarchical clustering is to generate a hierarchical series of nested clusters. Dendrograms will be utilised to visualise the evolution of groupings and determine the optimal cluster size. Using the generated dendograms, we then determine the greatest vertical distance that does not intersect any other clusters. After that, draw a horizontal threshold line at both ends. The optimal number of clusters equals the number of vertical lines traversing the horizontal line. In the example given below, the optimal number of clusters would be four.</p>
-            
+                <img class="plot-example-image" src="../images/subpage3/Hiarachical Clustering Example.png" />   
+                <p style="text-align:center; font-size:13px;"><em>🖼 Dendogram and Hierarchical Clustering Result by <a href="https://towardsdatascience.com/hierarchical-clustering-explained-e59b13846da8"target="_blank">Prasad Pai</a></em></p> 
+                <p>The initial step in our approach entails creating a dendrogram. Following its construction, we then proceed to draw a horizontal line that intersects the longest vertical line without a crossing horizontal line in the dendrogram. Upon completion of these steps, we proceed to assess the dendrogram that has been formulated.</p>
+                <img class="plot-image" src="../images/subpage3/w.png"/>
+                <p>The dendrogram depicted above, which is based on Euclidean distances, suggests that the optimal number of clusters is two. This conclusion is reached by examining the tallest vertical line, or the one with the largest distance, which is the first line or branch. Following this, we'll employ this cluster number in the Agglomerative Clustering algorithm. Subsequently, we will visualize the resultant clusters and carry out an evaluation of their effectiveness. </p>
+                <img class="plot-image" src="../images/subpage3/Hiararchical plot.png"/>
+                <p>The final phase of our analysis involves evaluating the quality of the clusters generated by the Hierarchical Clustering algorithm. This evaluation will be accomplished using several metrics including the Silhouette Score, Davies-Bouldin Index, and the Calinski-Harabasz Index. These indices will provide a robust assessment of the quality of our clustering solution.</p>
+                <img class="plot-evaluate" src="../images/subpage3/Hia Eva.png" />
+                <br>
+                <br>
+
+                <p><strong style="font-size:24px;">Models Evaluation</strong></p>
+                <p>In this section, the quality of the clustering outcomes produced by the algorithm will be evaluated. This table compares the clustering results of each clustering algorithm (Davies-Bouldin index,silhouette score and Calinski-Harabasz Index).</p>
+                <img class="plot-image" src="../images/subpage3/Model Comparison.png"/>
+                <ul>
+                    <li><strong>K-Means Clustering:</strong> K-Means has the lowest Davies-Bouldin Index (0.782), suggesting that the clusters are well-separated. Its silhouette score is the highest (0.461), indicating that the samples are well-clustered. Furthermore, the high Calinski-Harabasz Index (3321.168) suggests that the clusters are dense and well-separated.</li>
+                    <li><strong>Hierarchical Clustering:</strong> Hierarchical Clustering has a slightly higher Davies-Bouldin Index (0.884) than K-Means, suggesting less well-separated clusters. Its silhouette score (0.441) is slightly lower, indicating a lower quality of clustering. However, the Calinski-Harabasz Index (2203.244) is still relatively high, indicating that the clusters are dense and well-separated, although not as much as in K-Means.</li>
+                    <li><strong>DBSCAN:</strong> DBSCAN has the highest Davies-Bouldin Index (1.56), suggesting poorly separated clusters. Its silhouette score is negative (-0.288), indicating that samples might have been assigned to the wrong clusters. The Calinski-Harabasz Index (224.921) is much lower than the other two models, suggesting that the clusters are not as dense or well-separated.</li>
+                </ul>
+                <br>
+                <p><strong style="font-size:18px;">Conclusion:</strong> According to the evaluation metrics, K-Means Clustering seems to perform best for this specific dataset, followed by Hierarchical Clustering. DBSCAN has the poorest performance according to these metrics. The next step is to conduct profiling to determine the characteristics of each cluster.</p>
+                <br>
+
+            <h3>Cluster Profilling</h3>
+                <p>This section will identify the characteristics of the clusters created by K-Means through cluster profiling.</p>
+                <img class="plot-image" src="../images/subpage3/Profilling.png"/>
+                <p>Based on the table above, it can be concluded that each cluster has the following characteristics:</p>
+                <ul>
+                    <li><span style="text-decoration: underline;">Cluster 1 (Low Income, High Family, Less Engaged Buyers):</span> These customers have the lowest income levels among all clusters. They usually have a high number of children at home (both young kids and teenagers), leading to a large family size. Their online activity is relatively high with frequent website visits, but they make fewer purchases across all channels. Their product preference leans towards wine, with low spending in other product categories. They tend to accept marketing campaign 3 slightly more often than others, but overall campaign acceptance is low.</li>
+                  
+                    <li><span style="text-decoration: underline;">Cluster 2 (High Income, Single, Variety Buyers):</span> These customers earn the highest income. Most of them do not have children and live alone or with a partner, leading to small family size. They are active buyers across all channels, especially web and catalog, and spend more on all product categories than any other cluster. They are particularly interested in wines and meats. They have the highest acceptance rates for most marketing campaigns, particularly campaign 4 and campaign 5.</li>
+                  
+                    <li><span style="text-decoration: underline;">Cluster 3 (Mid-High Income, Parent, Balanced Buyers):</span> These customers have above-average income levels and typically have one child at home. They are the most active catalog purchasers and prefer to buy a balanced mix of products, with particular interest in wines and meats. They have above-average campaign acceptance rates, especially for campaign 4.</li>
+                  
+                    <li><span style="text-decoration: underline;">Cluster 4 (Low-Mid Income, Young, Less Engaged Buyers):</span> These customers have below-average income levels and are generally younger than customers in other clusters. They have a high number of teenagers at home and an average-sized family. Despite frequent website visits, they make fewer purchases, mainly in-store. Their spending is low across all product categories. They have the lowest acceptance rates for marketing campaigns, particularly campaigns 4 and 5.</li>
+                  </ul>
+                  <br>
+                
+            <h3>Marketing Strategy Suggestions</h3>
+                  <p>Based on the profiling above, the following are suggestions for targeted marketing strategies for each cluster:</p>
+                  <br>
+                  <p>
+                    <strong style="color: #0ef;">Cluster 1 (Low Income, High Family, Less Engaged Buyers):</strong><br>
+                    The focus for marketing to this cluster could be on providing value for money and bulk-buying deals. Given their larger family size and lower income, offers could include family-sized bundles or deals on essentials. It could also be beneficial to provide an option for affordable installment plans. As these customers seem to respond more favorably to Campaign 3, this suggests they could be more receptive to direct marketing strategies.
+                </p>
+                
+                <p>
+                    <strong style="color: #0ef;">Cluster 2 (High Income, Single, Variety Buyers):</strong><br>
+                    With high income and no children, these customers likely have more disposable income and may appreciate higher-end products. The marketing plan could target them with exclusive offers or premium product lines. Given their high activity online and the good response to Campaigns 4 and 5, online marketing and personalized email campaigns could be effective.
+                </p>
+                
+                <p>
+                    <strong style="color: #0ef;">Cluster 3 (Mid-High Income, Parent, Balanced Buyers):</strong><br>
+                    Customers in this cluster might be interested in diverse product offerings and could appreciate deals on a variety of products. As they show an inclination towards catalog purchases, sending them targeted and personalized catalogs might be effective. Introducing reward or loyalty programs can be a good strategy to motivate them to spend more across different product categories.
+                </p>
+                
+                <p>
+                    <strong style="color: #0ef;">Cluster 4 (Low-Mid Income, Young, Less Engaged Buyers):</strong><br>
+                    These younger, less engaged buyers might be interested in products that are trendy and affordable. A social media marketing campaign could be a great way to engage this cluster. Also, introducing a referral program could encourage them to bring in friends or family. As they have low interaction with campaigns, especially Campaigns 4 and 5, improving these campaigns' relevance and attractiveness to this demographic might increase engagement.
+                </p>
+                
+                    
+
+                    
+                  
+                
+        
+        
+        
         </section>
     
 
