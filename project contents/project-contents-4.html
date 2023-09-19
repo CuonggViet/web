@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Viet Cuong Truong</title>
+    <link rel="shortcut icon" href="../images/a.jpg" type="image/x-icon">
+    <link rel="icon" href="../images/a" type="image/x-icon">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../project contents/subpage4-style.css">
+
+</head>
+
+<body>
+
+    <header class="header">
+        <a href="../" class="logo">Portfolio</a>
+
+        <div class='bx bx-menu' id="menu-icon"></div>
+
+        <nav class="navbar">
+            <a href="../#home">Home</a>
+            <a href="../#about">About</a>
+            <a href="../#education">Education</a>
+            <a href="../#portfolio" class="active">Projects</a>
+            <a href="../#contact">Contact</a>
+        </nav>
+    </header>
+
+    <section class="projects" id="projects">
+        <div class="content-container">
+            <h2 class="heading"> <span>Sports visualization with Python</span></h2>
+            <img class="heading-image" src="../images/subpage 4/aus plot.png" alt="#" />
+            <p style="font-size: 14px; text-align: center; font-family: medium-content-sans-serif-font, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-weight: 300;">Details of all shots Australia team attempted across their 7-match World Cup campaign. We will  <br>be able to create this visualization by the end of this blog. Original Matildas image is by <a href="https://www.sydney.com/events/fifa-womens-world-cup-2023" target="_blank">Sydney.com</a>. </p>
+            
+
+            <!-- Add your project content here -->
+            <body>
+                <div class="quote-container">
+                    <div class="quote-text">“The greatest value of a picture is when it forces us to notice what we never expected to see.”</div>
+                    <div class="quote-author">- John W. Tukey</div>
+                
+                </div>
+                <p>In recent years, the sports world has witnessed a transformative shift. Gone are the days when decisions were solely based on intuition or past traditions. Today, the headlines are filled with the advancements in Sports Analytics. From media outlets highlighting the evolution of this analytical age to advertisements showcasing the latest Big Data tools, the landscape is changing rapidly. It's not just about tracking basic statistics anymore; it's about leveraging multi-dimensional cameras that capture every minute detail, from the speed of a pass to the sweat on a player's brow. Think of the legends of the game - L.Messi, LeBron James, Tom Brady - and imagine the insights we can now derive to optimize their performance further.</p>
+
+                <p>While we've made significant strides, the journey of Sports Analytics is ongoing. The field continues to evolve, offering teams invaluable insights that influence decisions on drafting, trading, coaching, and strategizing.</p>
+
+                <p>In this article, I won't be delving into predictive algorithms for the Premier League standings or crafting the ideal team composition for the current season. Instead, I'll focus on the power of visualization in sports analytics, showcasing techniques that bring data to life, captivating and educating sports enthusiasts alike.</p>
+
+            <h4>Where can we get the data? 🤔</h4>
+                
+                <p><span style="text-decoration: underline;">Bad news:</span> this is usually the hardest part.</p>
+
+                <p>While summarizing sports events might seem straightforward—like tallying goals in a soccer match or counting throws in a basketball game—the real challenge emerges when seeking in-depth, play-by-play data for specific games. Monitoring every move of players in dynamic sports like football or basketball is no small feat.</p>
+                
+                <p>However, this intricate task holds immense value. Companies like SportVu and Opta Sports have capitalized on this demand, offering these detailed datasets at a premium. Their clientele ranges from sports teams and consultancies to research institutions, all eager to access this rich trove of information.</p>
+            
+                <br>
+                <blockquote style="font-size: 22px;">
+                    <em>“For every match we have three guys using[…] a live video feed on a pitch graphic: one guy watches the home team, another does the away team and the third man is essentially a data checker”</em>
+                    <br>
+                </blockquote>
+                <p>— Simon Banoub, Opta’s director of Marketing</p>
+                <div style="text-align: center;">
+                    . &nbsp; &nbsp; &nbsp; . &nbsp; &nbsp; &nbsp; . &nbsp; &nbsp; &nbsp; . &nbsp; &nbsp; &nbsp; . &nbsp; &nbsp; &nbsp; . &nbsp; &nbsp; &nbsp; .
+                </div>
+                
+                <p>Here comes our unsung hero<p>
+
+                <p>In a recent development, <span style="text-decoration: underline;">Statsbomb</span> has unveiled their comprehensive, second-by-second datasets. These cover every match from prominent football leagues such as the National Women Soccer League (US), the FA Women’s Super League (England), and the iconic 2022 FIFA World Cup.  You can get access to their datasets for free <a href="https://github.com/statsbomb/open-data/tree/master/data" target="_blank">here</a>.</p>
+                
+                <p>Note: These datasets are provided in JSON format. To make the most of them, you'll need to convert this raw data into a structured format that's more user-friendly and easier to manipulate.</p>
+                
+            <img class="plot-image" src="../images/subpage 4/json.png" />
+                <p>In this guide, our attention will be solely on the 2023 FIFA Women's World Cup. I strongly recommend going through the dataset's documentation before delving into the analysis.</p>
+
+                <p>Initially, we'll utilize <code>mplsoccer</code> to illustrate a basic football pitch for us.</p>
+            <img class="plot-image" src="../images/subpage 4/pitch .png" />
+            <img class="plot-image" src="../images/subpage 4/pitch.png" />
+            <p style="font-size: 16px; text-align: center; font-family: medium-content-sans-serif-font, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-weight: 300;"> A nice football pitch created by <a href="https://mplsoccer.readthedocs.io/en/latest/gallery/pitch_setup/plot_pitches.html" target="_blank">mplsoccer library.</a> </p>      
+        
+        <h4>Let's analysis the game between Australia beat Denmark 2-0</h4>
+            <img class="plot-score" src="../images/subpage 4/score.png" />
+            <img class="plot-aus-image" src="../images/subpage 4/aus vs den.png" />
+            <br>
+            <p>In my attempt to visualize football lineups, I utilized the <code>mplsoccer</code> library to depict the formations of two teams on a football pitch. Let's go into the steps I took:</p>
+            <ul>
+                <li><strong>Setting Up the Pitch:</strong> The pitch is divided into three sections: left for Australia's team information, right for Denmark's team information, and the center for the actual pitch visualization.</li>
+                <li><strong>Coordinating Player Positions:</strong> Specific coordinates on the pitch were assigned to each player position for accurate representation.</li>
+                <li><strong>Player Depiction:</strong> Players were strategically positioned on the pitch based on their roles, with their jersey numbers clearly marked.</li>
+                <li><strong>Data Sourcing:</strong> I extracted the lineups for both teams from a DataFrame and procured the complete squad details for both teams.</li>
+                <li><strong>Final Display:</strong> With all elements in place, I invoked the <code>plot_players_on_pitch</code> function to bring the visualization to life.</li>
+            </ul>
+            <p>Through these steps, I was able to create a compelling and informative visual representation of the football lineups, highlighting both the formations and individual player positions.</p>
+        
+        <h4>Plotting Pass maps</h4>
+            <p>Now to plot pass maps, we can either plot it for each player separately. I will demonstrate the process to do both.</p>
+            <p>The process to plot individual pass map of the player is:</p>
+
+            <ul>
+                <li>Filter the data by ‘type_name’ as ‘Pass’ and also by the player name. Save it in another data frame.</li>
+                <li>Create an instance of class ‘Pitch’.</li>
+                <li>Iterate over all rows of events. Get the x and y co-ordinates of the pass origin and then the distance travelled in the direction using the subtraction of pass end co-ordinates and pass start co-ordinates.</li>
+                <li>Now within that loop, check if the pass was incomplete or not. Based on that plot it using the ‘arrow’ function with color red or green. We also plot a scatter bubble at the pass start point.</li>
+                <li>After the loop, add a title text for the image and display the pass accuracy percentage.</li>
+            </ul>
+            <img class="plot-image" src="../images/subpage 4/individual.png" />
+            <p>Now, to generate the passing maps of all players of a team, we create a grid of plots and iterate over all players of that team.</p>
+            <img class="plot-aus-image" src="../images/subpage 4/team.png" />
+            <p><p>Upon analyzing the squad of the Matildas, it's evident that their tactical approach leans heavily towards playing long balls. This strategy, while effective in certain scenarios, places a significant emphasis on the accuracy of passes. A notable observation is the pass accuracy of their number 18, Mackenzie Arnold, who happens to be the goalkeeper. With a pass accuracy of just 41%, there's a clear area of improvement. Goalkeepers, especially in modern football, play a crucial role in ball distribution and initiating plays from the back. Enhancing Arnold's passing accuracy could drastically improve the team's ball retention and build-up play. If the Matildas can address this aspect and refine their long-ball strategy with better accuracy, they could elevate their game to new heights and pose a greater challenge to their opponents.</p>
+        </p>
+        
+        <h4>Long balls or long shots?</h4>
+            <p>A friend of mine was very convinced that the key to Australia’s successful World Cup was their relentless attempts to break down defending lines with long-range efforts. Think about that stunning goal Sam Kerr scored against England in the Semi-finals.</p>
+            <iframe width="1000" height="500" src="https://www.youtube.com/embed/AMERnq9B6aQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <p>We can again attempt to visualize all shots from the Australia team to decide whether the majority of their goals come from outside or inside the box?     </p>
+            <p>If I just follow the methods shown thus far, this is what I get.</p>
+            <img class="plot-image" src="../images/subpage 4/longshot.png" />
+            <p style="font-size: 16px; text-align: center; font-family: medium-content-sans-serif-font, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-weight: 300;">Shot taken by Australia team during the World Cup campaign. </p>
+            <p>This is fine. However, there's potential to enhance the visualization to make it more engaging and insightful. To achieve this, I implemented two specific modifications:</p>
+
+            <ol>
+                <li>Given that our focus is solely on the shots, which are all documented on one side of the pitch, I've chosen to depict only the right half of the pitch.</li>
+                <li>Considering our interest lies in the starting points of the shots, I've decided to omit the arrows. Instead, I'll represent the shots using scatter plots, where the x and y coordinates correspond to the locations where the shots were initiated.</li>
+            </ol>
+            <img class="plot-score" src="../images/subpage 4/point shot.png" />
+            <p>Now, the visualization appears significantly improved. A quick glance reveals that Matildas attempted an almost equal number of "shots" inside the boxes as they did outside the penalty area. While this does, to some degree, corroborate the notion that France opted for more long-range efforts than usual, one would typically anticipate a sparser distribution of "shots" outside the box. Nevertheless, it's intriguing to observe their consistent proficiency in both short and long-range attempts.</p>
+
+            <p>In my Jupyter notebook, I've also delved into advanced techniques like overlaying a density plot and incorporating images into the visualization. With just a few additional lines of code, you can effortlessly generate a visualization like this as well.</p>
+            <img class="plot-image" src="../images/subpage 4/aus plot.png" />
+ 
+            <div style="text-align: center;">
+                . &nbsp; &nbsp; &nbsp; . &nbsp; &nbsp; &nbsp; . &nbsp; &nbsp; &nbsp; . &nbsp; &nbsp; &nbsp; . &nbsp; &nbsp; &nbsp; . &nbsp; &nbsp; &nbsp; .
+            </div>
+            <br>
+                <p>You can find all the source code for this artical on <a href="URL_FOR_SOURCE_CODE">my Github</a>.<br>
+                The data used for this project was released by Statsbomb and is available to the public <a href="https://github.com/statsbomb/open-data" target="_blank">here</a>.</p>
+                
+    
+        </section>
+    
+
+    <footer class="footer">
+        <div class="footer-text">
+            <p>Copyright &copy; 2023 by Viet Truong.</p>
+        </div>
+
+        <div class="footer-iconTop">
+            <a href="#projects"><i class='bx bx-up-arrow-alt'></i></a>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <script src="../js/script.js"></script>
+</body>
+
+</html>
