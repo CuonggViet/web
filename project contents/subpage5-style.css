@@ -14,8 +14,8 @@
     color: #1a73e8;
   }
   .projects .heading-image {
-    width: 80%;
-    max-width: 800px; 
+    width: 100%;
+    max-width: 1000px; 
     height: auto;
     display: block;
     margin: 20px auto;
