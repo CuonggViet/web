@@ -70,7 +70,7 @@
                 
                 <p>Here comes our unsung hero<p>
 
-                <p>In a recent development, <span style="text-decoration: underline;">Statsbomb</span> has unveiled their comprehensive, second-by-second datasets. These cover every match from prominent football leagues such as the National Women Soccer League (US), the FA Women’s Super League (England), and the iconic 2022 FIFA World Cup.  You can get access to their datasets for free <a href="https://github.com/statsbomb/open-data/tree/master/data" target="_blank">here</a>.</p>
+                <p>In a recent development, <span style="text-decoration: underline;">Statsbomb</span> has unveiled their comprehensive, second-by-second datasets. These cover every match from prominent football leagues such as the National Women Soccer League (US), the FA Women’s Super League (England), and the iconic 2023 FIFA World Cup.  You can get access to their datasets for free <a href="https://github.com/statsbomb/open-data/tree/master/data" target="_blank">here</a>.</p>
                 <p>To give you a clearer picture of what this data entails, let's delve into a specific example. Below is a snippet from the dataset, representing a segment of data from a match featuring the Australia Women's vs Republic of Ireland Women's match:</p>
         
                 <img class="plot-image" src="../images/subpage 4/data.png" />                    
@@ -116,12 +116,12 @@
         </p>
         
         <h4>Long balls or long shots?</h4>
-            <p>A friend of mine was very convinced that the key to Australia’s successful World Cup was their relentless attempts to break down defending lines with long-range efforts. Think about that stunning goal Sam Kerr scored against England in the Semi-finals.</p>
+            <p>A friend of mine was very convinced that the key to Australia’s successful World Cup was their relentless attempts to break down defending lines with long-range shots. Think about that stunning goal Sam Kerr scored against England in the Semi-finals.</p>
             <iframe width="1000" height="500" src="https://www.youtube.com/embed/Tq4Qryh_fbQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             <p>We can again attempt to visualize all shots from the Australia team to decide whether the majority of their goals come from outside or inside the box?     </p>
             <p>If I just follow the methods shown thus far, this is what I get.</p>
             <img class="plot-image" src="../images/subpage 4/longshot.png" />
-            <p style="font-size: 16px; text-align: center; font-family: medium-content-sans-serif-font, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-weight: 300;">Shot taken by Australia team during the World Cup campaign. </p>
+            <p style="font-size: 16px; text-align: center; font-family: medium-content-sans-serif-font, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-weight: 300;">Shot by Australia team during the World Cup campaign. </p>
             <p>This is fine. However, there's potential to enhance the visualization to make it more engaging and insightful. To achieve this, I implemented two specific modifications:</p>
 
             <ol>
@@ -129,9 +129,9 @@
                 <li>Considering our interest lies in the starting points of the shots, I've decided to omit the arrows. Instead, I'll represent the shots using scatter plots, where the x and y coordinates correspond to the locations where the shots were initiated.</li>
             </ol>
             <img class="plot-score" src="../images/subpage 4/point shot.png" />
-            <p>Now, the visualization appears significantly improved. A quick glance reveals that Matildas attempted an almost equal number of "shots" inside the boxes as they did outside the penalty area. While this does, to some degree, corroborate the notion that France opted for more long-range efforts than usual, one would typically anticipate a sparser distribution of "shots" outside the box. Nevertheless, it's intriguing to observe their consistent proficiency in both short and long-range attempts.</p>
+            <p>Now, the visualization appears significantly improved. A quick glance reveals that while long-range attempts were indeed a notable feature of their gameplay, the data suggests that the majority of their goals originated from within the penalty box. In fact, the number of shots taken inside the box was double that of outside the box, and more importantly, the success rate of these attempts was significantly higher. The concentration of red dots inside the box—each one representing a goal—clearly outweighs those from further afield. This indicates that while Australia's long-range efforts were eye-catching, it was the precision and pressure applied from closer range that truly underpinned their successful World Cup campaign.</p>
 
-            <p>In my Jupyter notebook, I've also delved into advanced techniques like overlaying a density plot and incorporating images into the visualization. With just a few additional lines of code, you can effortlessly generate a visualization like this as well.</p>
+            <p>In conclusion, I created this visualization to congratulate the Matildas on their successful 2023 World Cup campaign, by combining a density plot with images to highlight their achievements.</p>
             <img class="plot-image" src="../images/subpage 4/aus plot.png" />
  
             <div style="text-align: center;">
