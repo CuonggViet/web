@@ -1,0 +1,132 @@
+/* Heading styles */
+.projects .content-container {
+  max-width: 80%; /* Adjust the value as needed */
+  margin: 0 auto; /* Center the container */
+}
+
+.projects h2 {
+  font-size: 43px; /* Adjust the value as needed */
+  font-weight: bold;
+  margin-bottom: 40px;
+}
+  
+  .projects h2 span {
+    color: #1a73e8;
+  }
+  .projects .heading-image {
+    width: 100%;
+    max-width: 900px; 
+    height: auto;
+    display: block;
+    margin: 20px auto;
+  }
+  
+  .projects h3 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-top: 20px;
+  }
+  
+  .projects h4 {
+    margin-top: 20px;
+    font-size: 35px;
+    margin-bottom: 15px;
+    font-family: 'Oswald', sans-serif;
+}
+
+  /* Text styles */
+  .projects p {
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+
+  .projects li {
+    font-size: 16px;
+    margin-bottom: 8px;
+    margin-left: 60px;
+  }
+  
+  /* Link styles */
+  .projects a {
+    color: #1a73e8;
+    text-decoration: none;
+  }
+  
+  .projects a:hover {
+    text-decoration: underline;
+  }
+  .projects .plot-image {
+    width: 70%;
+    max-width: 80%; 
+    height: auto;
+    display: block;
+    margin: 20px auto;
+  }
+
+  .projects .plot-score {
+    width: 35%;
+    max-width: 50%; 
+    height: 15%;
+    display: block;
+    margin: 5px auto;
+  }
+
+.projects .plot-aus-image {
+  width: 130%;
+  max-width: 100%; 
+  height: auto;
+  display: block;
+  margin: 20px auto;
+}
+
+
+
+
+
+
+
+
+
+.sql-query {
+    background-color: #232323;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    color: #55ff55; /* SQL query text color */
+    white-space: pre; /* Preserves spaces and line breaks */
+}
+
+.keyword {
+    color: #ff5555; /* Keyword text color */
+}
+
+
+
+table {
+    border-collapse: collapse;
+    width: auto; /* Width of the table based on content */
+    table-layout: auto; /* Allows table to determine cell width based on content */
+}
+
+th, td {
+    padding: 8px;
+    border: 1px solid #555; /* Cell border color */
+    text-align: left;
+}
+
+th {
+    background-color: #444; /* Header background color */
+    color: #fff; /* Header text color */
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #3c3c3c; /* Odd row background color */
+}
+
+tbody tr:nth-child(even) {
+    background-color: #303030; /* Even row background color */
+}
+
+
+
