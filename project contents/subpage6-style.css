@@ -14,31 +14,43 @@
     color: #1a73e8;
   }
   .projects .heading-image {
-    width: 100%;
-    max-width: 900px; 
+    width: 80%;
+    max-width: 800px; 
     height: auto;
     display: block;
     margin: 20px auto;
   }
   
   .projects h3 {
-    font-size: 20px;
+    font-size: 30px;
     font-weight: bold;
-    margin-bottom: 10px;
-    margin-top: 20px;
+    margin-bottom: 0px;
   }
   
   .projects h4 {
     margin-top: 20px;
-    font-size: 35px;
+    font-size: 20px;
     margin-bottom: 15px;
     font-family: 'Oswald', sans-serif;
 }
 
+.projects h5 {
+  margin-left: 20px;
+  margin-top: 15px;
+  font-size: 20px;
+  margin-bottom: 15px;
+  font-family: 'Oswald', sans-serif;
+}
+.projects h6 {
+  margin-top: 15px;
+  font-size: 20px;
+  margin-bottom: 15px;
+  font-family: 'Oswald', sans-serif;
+}
   /* Text styles */
   .projects p {
     font-size: 18px;
-    margin-bottom: 5px;
+    margin-bottom: 18px;
   }
 
   .projects li {
@@ -46,43 +58,18 @@
     margin-bottom: 8px;
     margin-left: 60px;
   }
-  
-  /* Link styles */
-  .projects a {
-    color: #1a73e8;
-    text-decoration: none;
-  }
-  
-  .projects a:hover {
-    text-decoration: underline;
-  }
-  .projects .plot-image {
-    width: 70%;
-    max-width: 80%; 
-    height: auto;
-    display: block;
-    margin: 20px auto;
-  }
-
-  .projects .plot-score {
-    width: 35%;
-    max-width: 50%; 
-    height: 15%;
-    display: block;
-    margin: 5px auto;
-  }
-
-.projects .plot-aus-image {
-  width: 130%;
-  max-width: 100%; 
+  .projects h4:hover,.projects h5:hover, .projects h6:hover {
+    text-decoration: underline; /* Adds underline */
+    color: #3498db; /* Changes color, choose any color you like */
+    cursor: pointer; /* Changes the cursor to indicate clickability */
+}
+.projects .plot-image {
+  width: 50%;
+  max-width: 60%; 
   height: auto;
   display: block;
   margin: 20px auto;
 }
-
-
-
-
 
 
 
@@ -95,11 +82,11 @@
   font-family: 'Courier New', Courier, monospace;
   color: white; /* SQL query text color */
   white-space: pre; /* Preserves spaces and line breaks */
-  font-size: 1.2em; /* Larger font size for the SQL query */
+  font-size: 1.4em; /* Larger font size for the SQL query */
 }
 
 .keyword {
-color: rgb(164, 164, 232);
+color: rgb(127, 127, 227);
 }
 
 .string {
@@ -115,6 +102,7 @@ table {
   width: auto; /* Width of the table based on content */
   table-layout: auto; /* Allows table to determine cell width based on content */
   font-size: 1.5em; /* Adjust size as needed for the table */
+  margin-bottom: 15px;
 }
 
 th, td {
@@ -136,6 +124,5 @@ tbody tr:nth-child(odd) {
 tbody tr:nth-child(even) {
   background-color: #303030; /* Even row background color */
 }
-
 
 
