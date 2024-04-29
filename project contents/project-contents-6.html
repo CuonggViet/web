@@ -33,9 +33,15 @@
     <section class="projects" id="projects">
         <div class="panel">
             <pre class="sql-query">
-    SELECT <span class="keyword">*</span>
-    FROM <span class="keyword">dvd_rentals.film_actor</span>
-    WHERE <span class="keyword">actor_id</span> = 1;</pre>
+    <span class="comment">-- department manager</span>
+    <span class="keyword">DROP</span> MATERIALIZED VIEW IF EXISTS mv_employees.department_manager;
+    <span class="keyword">CREATE</span> MATERIALIZED VIEW mv_employees.department_manager <span class="keyword">AS</span>
+    <span class="keyword">SELECT</span>
+            employee_id,
+            department_id,
+            from_date + interval <span class="string">'18 years'</span> <span class="keyword">AS</span> from_date,
+             -- other SQL code
+                </pre>
         <p>Results</p>
             <table>
               <tr>

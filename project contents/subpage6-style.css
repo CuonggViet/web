@@ -89,43 +89,52 @@
 
 
 .sql-query {
-    background-color: #232323;
-    padding: 10px;
-    margin-bottom: 20px;
-    font-family: 'Courier New', Courier, monospace;
-    color: #55ff55; /* SQL query text color */
-    white-space: pre; /* Preserves spaces and line breaks */
+  background-color: #232323;
+  padding: 10px;
+  margin-bottom: 20px;
+  font-family: 'Courier New', Courier, monospace;
+  color: white; /* SQL query text color */
+  white-space: pre; /* Preserves spaces and line breaks */
+  font-size: 1.2em; /* Larger font size for the SQL query */
 }
 
 .keyword {
-    color: #ff5555; /* Keyword text color */
+color: rgb(164, 164, 232);
 }
 
+.string {
+color: rgb(220, 38, 38);
+}
 
+.comment {
+color: green;
+}
 
 table {
-    border-collapse: collapse;
-    width: auto; /* Width of the table based on content */
-    table-layout: auto; /* Allows table to determine cell width based on content */
+  border-collapse: collapse;
+  width: auto; /* Width of the table based on content */
+  table-layout: auto; /* Allows table to determine cell width based on content */
+  font-size: 1.5em; /* Adjust size as needed for the table */
 }
 
 th, td {
-    padding: 8px;
-    border: 1px solid #555; /* Cell border color */
-    text-align: left;
+  padding: 8px;
+  border: 1px solid #555; /* Cell border color */
+  text-align: left;
 }
 
 th {
-    background-color: #444; /* Header background color */
-    color: #fff; /* Header text color */
+  background-color: #444; /* Header background color */
+  color: #fff; /* Header text color */
+  font-size: 1.1em; /* Slightly larger font size for headers */
 }
 
 tbody tr:nth-child(odd) {
-    background-color: #3c3c3c; /* Odd row background color */
+  background-color: #3c3c3c; /* Odd row background color */
 }
 
 tbody tr:nth-child(even) {
-    background-color: #303030; /* Even row background color */
+  background-color: #303030; /* Even row background color */
 }
 
 
