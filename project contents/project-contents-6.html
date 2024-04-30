@@ -46,7 +46,7 @@
             <h5 id="DE">1.2 Data Exploration 🔍</h5>
             <h5 id="MV">1.3 Updates MATERIALIZED VIEW 🔄</h5>
 
-        <h4 id="solution">2. Solution for the Case Study 💡</h4>
+        <h4 id="solution">2. Problem Solving 💡</h4>
             <h5 id="case-solution">2.1 Solution for the Case Study 💡</h5>
             <h5 id="results">2.2 Results 📊</h5>
 
@@ -67,6 +67,7 @@
 
 
             <h5 id="content-DE">1.2 Data Exploration 🔍</h5>
+            <div class = "1.2">
                 <p>This case study is provided with 6 key datasets:</p>
             <h6>⭐ Employee table</h6>
                 <p>
@@ -145,7 +146,7 @@
 <span class="keyword">ORDER BY</span> id_count <span class="keyword">DESC</span>
 <span class="keyword">LIMIT</span> <span class="string">5</span>;
 </pre>
-                <p>Results</p>
+                <p>Results:</p>
                 <table>
                     <tr>
                         <th>employee_id</th>
@@ -177,13 +178,15 @@
             
 
 
-            <h5>Exploring Employee Data Relationships</h5>
             <p>After inspecting the data - we notice that there is in fact a many-to-one relationship between the employees.title and employees.employee tables.</p>
-            <pre class="sql-query">
-            SELECT * FROM employees.title
-            WHERE employee_id = 10005
-            ORDER BY from_date;
-            </pre>
+<pre class="sql-query">
+<span class="keyword">SELECT</span> * 
+<span class="keyword">FROM</span> employees.title
+<span class="keyword">WHERE</span> employee_id = <span class="string">10005</span>
+<span class="keyword">ORDER BY</span> from_date;
+</pre>
+
+
             <p>Result:</p>
             <table>
                 <tr>
@@ -209,15 +212,17 @@
             <p>Also, there is the issue with the dates where the year was wrongly input which is similar with the employee table above.</p>
             
             <h6>⭐ Salary</h6>
-            <pre class="sql-query">
-            SELECT 
-              employee_id,
-              COUNT(employee_id) AS id_count
-            FROM employees.salary
-            GROUP BY employee_id
-            ORDER BY id_count DESC
-            LIMIT 5;
-            </pre>
+<pre class="sql-query">
+<span class="keyword">SELECT</span>
+  employee_id,
+  <span class="keyword">COUNT</span>(employee_id) <span class="keyword">AS</span> id_count
+<span class="keyword">FROM</span> employees.salary
+<span class="keyword">GROUP BY</span> employee_id
+<span class="keyword">ORDER BY</span> id_count <span class="keyword">DESC</span>
+<span class="keyword">LIMIT</span> <span class="string">5</span>;
+</pre>
+
+
             <p>Result:</p>
             <table>
                 <tr>
@@ -232,10 +237,12 @@
             </table>
             <p>The third table is the all-important employees.salary table - it also has a similar relationship with the unique employees.employee table in that there are many-to-one or one-to-many records for each employee and their salary amounts over time.</p>
             <p>Let’s also continue to check employee_id 10005’s records for this table ordered by the from_date ascending from earliest to latest to checkout his salary growth over the years with the company:</p>
-            <pre class="sql-query">
-            SELECT * FROM employees.salary
-            WHERE employee_id = 10005;
-            </pre>
+<pre class="sql-query">
+<span class="keyword">SELECT</span> * 
+<span class="keyword">FROM</span> employees.salary
+<span class="keyword">WHERE</span> employee_id = <span class="string">10005</span>;
+</pre>
+
             <p>Result:</p>
             <table>
                 <tr>
@@ -265,15 +272,16 @@
             
             <h6> ⭐ department_employee</h6>
             <p>We now take a look at the employees.department_employee table which captures information for which department each employee belongs to throughout their career with our company.</p>
-            <pre class="sql-query">
-            SELECT
-              employee_id,
-              COUNT(DISTINCT department_id) AS unique_departments
-            FROM employees.department_employee
-            GROUP BY employee_id
-            ORDER BY unique_departments DESC
-            LIMIT 5;
-            </pre>
+<pre class="sql-query">
+<span class="keyword">SELECT</span>
+  employee_id,
+  <span class="keyword">COUNT</span>(<span class="keyword">DISTINCT</span> department_id) <span class="keyword">AS</span> unique_departments
+<span class="keyword">FROM</span> employees.department_employee
+<span class="keyword">GROUP BY</span> employee_id
+<span class="keyword">ORDER BY</span> unique_departments <span class="keyword">DESC</span>
+<span class="keyword">LIMIT</span> <span class="string">5</span>;
+</pre>
+
             <p>Result:</p>
             <table>
                 <tr>
@@ -287,11 +295,13 @@
                 <tr><td>10050</td><td>2</td></tr>
             </table>
             <p>In the same vain as the previous tables - we have the same slow changing dimension (SCD) style data design with a many-to-one relationship with the base employees.employee table</p>
-            <pre class="sql-query">
-            SELECT * FROM employees.department_employee
-            WHERE employee_id = 10029
-            LIMIT 5;
-            </pre>
+<pre class="sql-query">
+<span class="keyword">SELECT</span> *
+<span class="keyword">FROM</span> employees.department_employee
+<span class="keyword">WHERE</span> employee_id = <span class="string">10029</span>
+<span class="keyword">LIMIT</span> <span class="string">5</span>;
+</pre>
+
             <p>Result:</p>
             <table>
                 <tr>
@@ -314,14 +324,18 @@
                 </tr>
             </table>
             <p>We can see that they’ve changed departments from d004 to d006 on 1999-07-08 (well, we’ll add 18 years to this date later!).</p>
-            
+            <p>This department_id value is all good and well though - but wouldn’t it be more useful if we were to actually use the department name…
+
+            </p>
             <h6>⭐ department_manager</h6>
             <p>Before we cover the actual department name - let’s also take a look at the department manager too, this time still with the random looking department_id values!</p>
-            <pre class="sql-query">
-            SELECT * FROM employees.department_manager
-            ORDER BY employee_id
-            LIMIT 5;
-            </pre>
+<pre class="sql-query">
+<span class="keyword">SELECT</span> *
+<span class="keyword">FROM</span> employees.department_manager
+<span class="keyword">ORDER BY</span> employee_id
+<span class="keyword">LIMIT</span> <span class="string">5</span>;
+</pre>
+
             <p>Result:</p>
             <table>
                 <tr>
@@ -336,13 +350,15 @@
                 <tr><td>110114</td><td>d002</td><td>1989-12-17T00:00:00.000Z</td><td>9999-01-01T00:00:00.000Z</td></tr>
                 <tr><td>110183</td><td>d003</td><td>1985-01-01T00:00:00.000Z</td><td>1992-03-21T00:00:00.000Z</td></tr>
             </table>
+            <p>In the same way that the employees.department_employee table shows the relationship between employees and their respective departments throughout time - the employees.department_manager table shows the employee_id of the manager of each department throughout time.</p>
             <p>To inspect this dataset - how about we take a look at that department_id = 'd004' record:</p>
-            <pre class="sql-query">
-            SELECT *
-            FROM employees.department_manager
-            WHERE department_id = 'd004'
-            ORDER BY from_date;
-            </pre>
+<pre class="sql-query">
+<span class="keyword">SELECT</span> *
+<span class="keyword">FROM</span> employees.department_manager
+<span class="keyword">WHERE</span> department_id = <span class="string">'d004'</span>
+<span class="keyword">ORDER BY</span> from_date;
+</pre>
+
             <p>Result:</p>
             <table>
                 <tr>
@@ -360,11 +376,12 @@
             
             <h6>⭐ Department table</h6>
             <p>The employees.department table is just like the employees.employee table where there is a 1:1 unique relationship between the id or department_id and the dept_name.</p>
-            <pre class="sql-query">
-            SELECT *
-            FROM employees.department
-            ORDER BY id;
-            </pre>
+<pre class="sql-query">
+<span class="keyword">SELECT</span> *
+<span class="keyword">FROM</span> employees.department
+<span class="keyword">ORDER BY</span> id;
+</pre>
+
             <p>Result:</p>
             <table>
                 <tr>
@@ -381,51 +398,118 @@
                 <tr><td>d008</td><td>Research</td></tr>
                 <tr><td>d009</td><td>Customer Service</td></tr>
             </table>
-                        
-
-        <div class="panel">
-            <pre class="sql-query">
-    <span class="comment">-- department manager</span>
-    <span class="keyword">DROP</span> MATERIALIZED VIEW IF EXISTS mv_employees.department_manager;
-    <span class="keyword">CREATE</span> MATERIALIZED VIEW mv_employees.department_manager <span class="keyword">AS</span>
-    <span class="keyword">SELECT</span>
-            employee_id,
-            department_id,
-            from_date + interval <span class="string">'18 years'</span> <span class="keyword">AS</span> from_date,
-             -- other SQL code
-                </pre>
-        <p>Results</p>
-            <table>
-              <tr>
-                  <td>language_id</td>
-                  <td>name</td>
-              </tr>
-              <tr>
-                  <td>1</td>
-                  <td>"English "</td>
-              </tr>
-              <tr>
-                  <td>2</td>
-                  <td>"Italian "</td>
-              </tr>
-              <tr>
-                  <td>3</td>
-                  <td>"Japanese "</td>
-              </tr>
-              <tr>
-                  <td>4</td>
-                  <td>"Mandarin "</td>
-              </tr>
-              <tr>
-                  <td>5</td>
-                  <td>"French "</td>
-              </tr>
-              <tr>
-                  <td>6</td>
-                  <td>"German "</td>
-              </tr>
-          </table>
         </div>
+
+
+
+            <h5 id="content-MV">1.3 Updates MATERIALIZED VIEW 🔄</h5>
+            <div class = "1.3">
+                <p>For views which might be accessed multiple times frequently - it makes a lot of sense to create a materialized view as there is only a single REFRESH MATERIALIZED VIEW statement to pull in the new data if there are any changes in the upstream source data.</p>
+                <p>Additionally - I will create indexes on materialized views which will also get updated whenever we refresh the materialized view.</p>
+            
+<pre class="sql-query">
+<span class="comment">-- DROP existing schema if it exists</span>
+<span class="keyword">DROP SCHEMA IF EXISTS</span> mv_employees <span class="keyword">CASCADE</span>;
+<span class="keyword">CREATE SCHEMA</span> mv_employees;
+
+<span class="comment">-- department</span>
+<span class="keyword">DROP MATERIALIZED VIEW IF EXISTS</span> mv_employees.department;
+<span class="keyword">CREATE MATERIALIZED VIEW</span> mv_employees.department <span class="keyword">AS</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> employees.department;
+
+<span class="comment">-- department employee</span>
+<span class="keyword">DROP MATERIALIZED VIEW IF EXISTS</span> mv_employees.department_employee;
+<span class="keyword">CREATE MATERIALIZED VIEW</span> mv_employees.department_employee <span class="keyword">AS</span>
+<span class="keyword">SELECT</span>
+  employee_id,
+  department_id,
+  interval <span class="string">'18 years'</span>::<span class="keyword">DATE</span> <span class="keyword">AS</span> from_date,
+  <span class="keyword">CASE</span>
+    <span class="keyword">WHEN</span> to_date <> <span class="string">'9999-01-01'</span> <span class="keyword">THEN</span> (to_date + interval <span class="string">'18 years'</span>)::<span class="keyword">DATE</span>
+    <span class="keyword">ELSE</span> to_date
+  <span class="keyword">END</span> <span class="keyword">AS</span> to_date
+<span class="keyword">FROM</span> employees.department_employee;
+
+<span class="comment">-- department manager</span>
+<span class="keyword">DROP MATERIALIZED VIEW IF EXISTS</span> mv_employees.department_manager;
+<span class="keyword">CREATE MATERIALIZED VIEW</span> mv_employees.department_manager <span class="keyword">AS</span>
+<span class="keyword">SELECT</span>
+  employee_id,
+  department_id,
+  interval <span class="string">'18 years'</span>::<span class="keyword">DATE</span> <span class="keyword">AS</span> from_date,
+  <span class="keyword">CASE</span>
+    <span class="keyword">WHEN</span> to_date <> <span class="string">'9999-01-01'</span> <span class="keyword">THEN</span> (to_date + interval <span class="string">'18 years'</span>)::<span class="keyword">DATE</span>
+    <span class="keyword">ELSE</span> to_date
+  <span class="keyword">END</span> <span class="keyword">AS</span> to_date
+<span class="keyword">FROM</span> employees.department_manager;
+
+<span class="comment">-- employee</span>
+<span class="keyword">DROP MATERIALIZED VIEW IF EXISTS</span> mv_employees.employee;
+<span class="keyword">CREATE MATERIALIZED VIEW</span> mv_employees.employee <span class="keyword">AS</span>
+<span class="keyword">SELECT</span>
+  id,
+  interval <span class="string">'18 years'</span>::<span class="keyword">DATE</span> <span class="keyword">AS</span> birth_date,
+  first_name,
+  last_name,
+  gender,
+  interval <span class="string">'18 years'</span>::<span class="keyword">DATE</span> <span class="keyword">AS</span> hire_date
+<span class="keyword">FROM</span> employees.employee;
+
+<span class="comment">-- salary</span>
+<span class="keyword">DROP MATERIALIZED VIEW IF EXISTS</span> mv_employees.salary;
+<span class="keyword">CREATE MATERIALIZED VIEW</span> mv_employees.salary <span class="keyword">AS</span>
+<span class="keyword">SELECT</span>
+  employee_id,
+  amount,
+  interval <span class="string">'18 years'</span>::<span class="keyword">DATE</span> <span class="keyword">AS</span> from_date,
+  <span class="keyword">CASE</span>
+    <span class="keyword">WHEN</span> to_date <> <span class="string">'9999-01-01'</span> <span class="keyword">THEN</span> (to_date + interval <span class="string">'18 years'</span>)::<span class="keyword">DATE</span>
+    <span class="keyword">ELSE</span> to_date
+  <span class="keyword">END</span> <span class="keyword">AS</span> to_date
+<span class="keyword">FROM</span> employees.salary;
+
+<span class="comment">-- title</span>
+<span class="keyword">DROP MATERIALIZED VIEW IF EXISTS</span> mv_employees.title;
+<span class="keyword">CREATE MATERIALIZED VIEW</span> mv_employees.title <span class="keyword">AS</span>
+<span class="keyword">SELECT</span>
+  employee_id,
+  title,
+  interval <span class="string">'18 years'</span>::<span class="keyword">DATE</span> <span class="keyword">AS</span> from_date,
+  <span class="keyword">CASE</span>
+    <span class="keyword">WHEN</span> to_date <> <span class="string">'9999-01-01'</span> <span class="keyword">THEN</span> (to_date + interval <span class="string">'18 years'</span>)::<span class="keyword">DATE</span>
+    <span class="keyword">ELSE</span> to_date
+  <span class="keyword">END</span> <span class="keyword">AS</span> to_date
+<span class="keyword">FROM</span> employees.title;
+
+<span class="comment">-- Index Creation</span>
+<span class="comment">-- NOTE: we do not name the indexes as they will be given randomly upon creation!</span>
+<span class="keyword">CREATE UNIQUE INDEX</span> <span class="keyword">ON</span> mv_employees.employee <span class="keyword">USING</span> btree (id);
+<span class="keyword">CREATE UNIQUE INDEX</span> <span class="keyword">ON</span> mv_employees.department_employee <span class="keyword">USING</span> btree (employee_id, department_id);
+<span class="keyword">CREATE INDEX</span>        <span class="keyword">ON</span> mv_employees.department_employee <span class="keyword">USING</span> btree (department_id);
+<span class="keyword">CREATE UNIQUE INDEX</span> <span class="keyword">ON</span> mv_employees.department <span class="keyword">USING</span> btree (id);
+<span class="keyword">CREATE UNIQUE INDEX</span> <span class="keyword">ON</span> mv_employees.department <span class="keyword">USING</span> btree (dept_name);
+<span class="keyword">CREATE UNIQUE INDEX</span> <span class="keyword">ON</span> mv_employees.department_manager <span class="keyword">USING</span> btree (employee_id, department_id);
+<span class="keyword">CREATE INDEX</span>        <span class="keyword">ON</span> mv_employees.department_manager <span class="keyword">USING</span> btree (department_id);
+<span class="keyword">CREATE UNIQUE INDEX</span> <span class="keyword">ON</span> mv_employees.salary <span class="keyword">USING</span> btree (employee_id, from_date);
+<span class="keyword">CREATE UNIQUE INDEX</span> <span class="keyword">ON</span> mv_employees.title <span class="keyword">USING</span> btree (employee_id, title, from_date);
+</pre>
+</div>
+
+        <h4 id="content-solution">2. Problem Solving 💡</h4>
+        <h6><strong>Required Insights for HR Analytica Dashboards</strong></h6>
+
+        <p><strong>Company Level Insights:</strong> We need a snapshot of total employees and a gender-specific breakdown. Metrics include average tenure, latest payrise percentage, and statistical salary metrics (minimum, maximum, standard deviation, inter-quartile range, and median).</p>
+        
+        <p><strong>Department Level Insights:</strong> Metrics similar to the company level tailored to each department, with added analysis of tenure by gender.</p>
+        
+        <p><strong>Title Level Insights:</strong> Metrics at the title level will provide granular insights similar to those at the department level, including counts and average tenure for each title.</p>
+        
+        <p><strong>Employee Deep Dive:</strong> This tool will spotlight an employee's detailed history, including chronological employment changes, historic pay rises, previous position durations, and a comparison of the employee’s current salary and role specifics against average benchmarks.</p>
+        
+        <p>These insights will inform the creation of two dashboards and enhance the Employee Deep Dive tool, focusing on both broad organizational metrics and individual employee analysis.</p>
+        
+
+
     </div>
         
 
