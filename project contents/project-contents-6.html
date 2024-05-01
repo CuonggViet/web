@@ -496,18 +496,1353 @@
 </div>
 
         <h4 id="content-solution">2. Problem Solving 💡</h4>
-        <h6><strong>Required Insights for HR Analytica Dashboards</strong></h6>
+        <h6>📊 Required Insights for HR Analytica Dashboards</h6>
 
-        <p><strong>Company Level Insights:</strong> We need a snapshot of total employees and a gender-specific breakdown. Metrics include average tenure, latest payrise percentage, and statistical salary metrics (minimum, maximum, standard deviation, inter-quartile range, and median).</p>
-        
-        <p><strong>Department Level Insights:</strong> Metrics similar to the company level tailored to each department, with added analysis of tenure by gender.</p>
-        
-        <p><strong>Title Level Insights:</strong> Metrics at the title level will provide granular insights similar to those at the department level, including counts and average tenure for each title.</p>
-        
-        <p><strong>Employee Deep Dive:</strong> This tool will spotlight an employee's detailed history, including chronological employment changes, historic pay rises, previous position durations, and a comparison of the employee’s current salary and role specifics against average benchmarks.</p>
-        
-        <p>These insights will inform the creation of two dashboards and enhance the Employee Deep Dive tool, focusing on both broad organizational metrics and individual employee analysis.</p>
-        
+        <h6>🏢 Company Level Insights:</h6>
+        <ul>
+            <li><strong>Snapshot of Total Employees:</strong> Include a gender-specific breakdown.</li>
+            <li><strong>Average Tenure:</strong> How long employees typically remain at the company.</li>
+            <li><strong>Latest Payrise Percentage:</strong> Average increase in pay across the company.</li>
+            <li><strong>Salary Metrics:</strong> Include minimum, maximum, standard deviation, inter-quartile range, and median.</li>
+        </ul>
+    
+        <h6>📁 Department Level Insights:</h6>
+        <ul>
+            <li><strong>Department-specific Metrics:</strong> Tailored insights similar to company level but broken down by department.</li>
+            <li><strong>Tenure Analysis:</strong> Analyze average tenure within each department, segmented by gender.</li>
+        </ul>
+    
+        <h6>🏷️ Title Level Insights:</h6>
+        <ul>
+            <li><strong>Granular Title Insights:</strong> Provide count and average tenure for each title, mirroring department level detail.</li>
+        </ul>
+    
+        <h6>🔍 Employee Deep Dive:</h6>
+        <ul>
+            <li><strong>Historical Employment Changes:</strong> Review chronological employment changes, including salary adjustments, department shifts, and title changes.</li>
+            <li><strong>Payrise History:</strong> Calculate percentages and value changes in past pay rises.</li>
+            <li><strong>Position and Department Tenure:</strong> Examine durations of past roles with start and end dates.</li>
+            <li><strong>Comparison to Benchmarks:</strong> Compare an employee’s current salary, tenure, department, and position against average benchmarks.</li>
+        </ul>
+
+
+
+
+
+        <h5 id="content-case-solution">2.1 Solution for the Case Study 💡</h5>
+        <div class = "2.1">
+            
+            <p>This is the final script for the problem solution of this case study:
+            </p>
+            <pre class="sql-query">
+<span class="comment">/*-----------------------------------</span>
+<span class="comment">Current employee snapshot view</span>
+<span class="comment">-------------------------------------*/</span>
+
+<span class="keyword">DROP VIEW IF EXISTS</span> mv_employees.current_employee_snapshot;
+<span class="keyword">CREATE VIEW</span> mv_employees.current_employee_snapshot <span class="keyword">AS</span>
+<span class="keyword">WITH</span> cte_previous_salary <span class="keyword">AS</span> (
+  <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> (
+    <span class="keyword">SELECT</span>
+      employee_id,
+      to_date,
+      <span class="keyword">LAG</span>(amount) <span class="keyword">OVER</span> (
+        <span class="keyword">PARTITION BY</span> employee_id
+        <span class="keyword">ORDER BY</span> from_date
+      ) <span class="keyword">AS</span> amount
+    <span class="keyword">FROM</span> mv_employees.salary
+  ) all_salaries
+  <span class="keyword">WHERE</span> to_date = <span class="string">'9999-01-01'</span>
+),
+cte_joined_data <span class="keyword">AS</span> (
+  <span class="keyword">SELECT</span>
+    employee.id <span class="keyword">AS</span> employee_id,
+    <span class="keyword">CONCAT_WS</span>(<span class="string">' '</span>, employee.first_name, employee.last_name) <span class="keyword">AS</span> employee_name,
+    employee.gender,
+    employee.hire_date,
+    title.title,
+    salary.amount <span class="keyword">AS</span> salary,
+    cte_previous_salary.amount <span class="keyword">AS</span> previous_salary,
+    department.dept_name <span class="keyword">AS</span> department,
+    <span class="keyword">CONCAT_WS</span>(<span class="string">' '</span>, manager.first_name, manager.last_name) <span class="keyword">AS</span> manager,
+    title.from_date <span class="keyword">AS</span> title_from_date,
+    department_employee.from_date <span class="keyword">AS</span> department_from_date
+  <span class="keyword">FROM</span> mv_employees.employee
+  <span class="keyword">INNER JOIN</span> mv_employees.title
+    <span class="keyword">ON</span> employee.id = title.employee_id
+  <span class="keyword">INNER JOIN</span> mv_employees.salary
+    <span class="keyword">ON</span> employee.id = salary.employee_id
+  <span class="keyword">INNER JOIN</span> cte_previous_salary
+    <span class="keyword">ON</span> employee.id = cte_previous_salary.employee_id
+  <span class="keyword">INNER JOIN</span> mv_employees.department_employee
+    <span class="keyword">ON</span> employee.id = department_employee.employee_id
+  <span class="keyword">INNER JOIN</span> mv_employees.department
+    <span class="keyword">ON</span> department_employee.department_id = department.id
+  <span class="keyword">INNER JOIN</span> mv_employees.department_manager
+    <span class="keyword">ON</span> department.id = department_manager.department_id
+  <span class="keyword">INNER JOIN</span> mv_employees.employee <span class="keyword">AS</span> manager
+    <span class="keyword">ON</span> department_manager.employee_id = manager.id
+  <span class="keyword">WHERE</span> salary.to_date = <span class="string">'9999-01-01'</span>
+    <span class="keyword">AND</span> title.to_date = <span class="string">'9999-01-01'</span>
+    <span class="keyword">AND</span> department_employee.to_date = <span class="string">'9999-01-01'</span>
+    <span class="keyword">AND</span> department_manager.to_date = <span class="string">'9999-01-01'</span>
+)
+<span class="keyword">SELECT</span>
+  employee_id,
+  employee_name,
+  manager,
+  gender,
+  title,
+  salary,
+  department,
+  <span class="comment">-- salary change percentage</span>
+  <span class="keyword">ROUND</span>(
+    100 * (salary - previous_salary) / previous_salary::<span class="keyword">NUMERIC</span>,
+    2
+  ) <span class="keyword">AS</span> salary_percentage_change,
+  <span class="comment">-- tenure calculations</span>
+  <span class="keyword">DATE_PART</span>(<span class="string">'year'</span>, <span class="keyword">now</span>()) -
+    <span class="keyword">DATE_PART</span>(<span class="string">'year'</span>, hire_date) <span class="keyword">AS</span> company_tenure_years,
+  <span class="keyword">DATE_PART</span>(<span class="string">'year'</span>, <span class="keyword">now</span>()) -
+    <span class="keyword">DATE_PART</span>(<span class="string">'year'</span>, title_from_date) <span class="keyword">AS</span> title_tenure_years,
+  <span class="keyword">DATE_PART</span>(<span class="string">'year'</span>, <span class="keyword">now</span>()) -
+    <span class="keyword">DATE_PART</span>(<span class="string">'year'</span>, department_from_date) <span class="keyword">AS</span> department_tenure_years
+<span class="keyword">FROM</span> cte_joined_data;
+
+<span class="comment">/*---------------------------</span>
+<span class="comment">Aggregated dashboard views</span>
+<span class="comment">-----------------------------*/</span>
+
+<span class="comment">-- company level aggregation view</span>
+<span class="keyword">DROP VIEW IF EXISTS</span> mv_employees.company_level_dashboard;
+<span class="keyword">CREATE VIEW</span> mv_employees.company_level_dashboard <span class="keyword">AS</span>
+<span class="keyword">SELECT</span>
+  gender,
+  <span class="keyword">COUNT</span>(*) <span class="keyword">AS</span> employee_count,
+  <span class="keyword">ROUND</span>(100 * <span class="keyword">COUNT</span>(*)::<span class="keyword">NUMERIC</span> / <span class="keyword">SUM</span>(<span class="keyword">COUNT</span>(*)) <span class="keyword">OVER</span> ()) <span class="keyword">AS</span> employee_percentage,
+  <span class="keyword">ROUND</span>(<span class="keyword">AVG</span>(company_tenure_years)) <span class="keyword">AS</span> company_tenure,
+  <span class="keyword">ROUND</span>(<span class="keyword">AVG</span>(salary)) <span class="keyword">AS</span> avg_salary,
+  <span class="keyword">ROUND</span>(<span class="keyword">AVG</span>(salary_percentage_change)) <span class="keyword">AS</span> avg_salary_percentage_change,
+  <span class="comment">-- salary statistics</span>
+  <span class="keyword">ROUND</span>(<span class="keyword">MIN</span>(salary)) <span class="keyword">AS</span> min_salary,
+  <span class="keyword">ROUND</span>(<span class="keyword">MAX</span>(salary)) <span class="keyword">AS</span> max_salary,
+  <span class="keyword">ROUND</span>(
+    <span class="keyword">PERCENTILE_CONT</span>(0.5) <span class="keyword">WITHIN GROUP</span> (<span class="keyword">ORDER BY</span> salary)) <span class="keyword">AS</span> median_salary,
+  <span class="keyword">ROUND</span>(
+    <span class="keyword">PERCENTILE_CONT</span>(0.75) <span class="keyword">WITHIN GROUP</span> (<span class="keyword">ORDER BY</span> salary) -
+    <span class="keyword">PERCENTILE_CONT</span>(0.25) <span class="keyword">WITHIN GROUP</span> (<span class="keyword">ORDER BY</span> salary)
+  ) <span class="keyword">AS</span> inter_quartile_range,
+  <span class="keyword">ROUND</span>(<span class="keyword">STDDEV</span>(salary)) <span class="keyword">AS</span> stddev_salary
+<span class="keyword">FROM</span> mv_employees.current_employee_snapshot
+<span class="keyword">GROUP BY</span> gender;
+
+<span class="comment">-- department level aggregation view</span>
+<span class="keyword">DROP VIEW IF EXISTS</span> mv_employees.department_level_dashboard;
+<span class="keyword">CREATE VIEW</span> mv_employees.department_level_dashboard <span class="keyword">AS</span>
+<span class="keyword">SELECT</span>
+  gender,
+  department,
+  <span class="keyword">COUNT</span>(*) <span class="keyword">AS</span> employee_count,
+  <span class="keyword">ROUND</span>(100 * <span class="keyword">COUNT</span>(*)::<span class="keyword">NUMERIC</span> / <span class="keyword">SUM</span>(<span class="keyword">COUNT</span>(*)) <span class="keyword">OVER</span> (
+    <span class="keyword">PARTITION BY</span> department
+  )) <span class="keyword">AS</span> employee_percentage,
+  <span class="keyword">ROUND</span>(<span class="keyword">AVG</span>(department_tenure_years)) <span class="keyword">AS</span> department_tenure,
+  <span class="keyword">ROUND</span>(<span class="keyword">AVG</span>(salary)) <span class="keyword">AS</span> avg_salary,
+  <span class="keyword">ROUND</span>(<span class="keyword">AVG</span>(salary_percentage_change)) <span class="keyword">AS</span> avg_salary_percentage_change,
+  <span class="comment">-- salary statistics</span>
+  <span class="keyword">ROUND</span>(<span class="keyword">MIN</span>(salary)) <span class="keyword">AS</span> min_salary,
+  <span class="keyword">ROUND</span>(<span class="keyword">MAX</span>(salary)) <span class="keyword">AS</span> max_salary,
+  <span class="keyword">ROUND</span>(
+    <span class="keyword">PERCENTILE_CONT</span>(0.5) <span class="keyword">WITHIN GROUP</span> (<span class="keyword">ORDER BY</span> salary)) <span class="keyword">AS</span> median_salary,
+  <span class="keyword">ROUND</span>(
+    <span class="keyword">PERCENTILE_CONT</span>(0.75) <span class="keyword">WITHIN GROUP</span> (<span class="keyword">ORDER BY</span> salary) -
+    <span class="keyword">PERCENTILE_CONT</span>(0.25) <span class="keyword">WITHIN GROUP</span> (<span class="keyword">ORDER BY</span> salary)
+  ) <span class="keyword">AS</span> inter_quartile_range,
+  <span class="keyword">ROUND</span>(<span class="keyword">STDDEV</span>(salary)) <span class="keyword">AS</span> stddev_salary
+<span class="keyword">FROM</span> mv_employees.current_employee_snapshot
+<span class="keyword">GROUP BY</span>
+  gender, department;
+
+<span class="comment">-- title level aggregation view</span>
+<span class="keyword">DROP VIEW IF EXISTS</span> mv_employees.title_level_dashboard;
+<span class="keyword">CREATE VIEW</span> mv_employees.title_level_dashboard <span class="keyword">AS</span>
+<span class="keyword">SELECT</span>
+  gender,
+  title,
+  <span class="keyword">COUNT</span>(*) <span class="keyword">AS</span> employee_count,
+  <span class="keyword">ROUND</span>(100 * <span class="keyword">COUNT</span>(*)::<span class="keyword">NUMERIC</span> / <span class="keyword">SUM</span>(<span class="keyword">COUNT</span>(*)) <span class="keyword">OVER</span> (
+    <span class="keyword">PARTITION BY</span> title
+  )) <span class="keyword">AS</span> employee_percentage,
+  <span class="keyword">ROUND</span>(<span class="keyword">AVG</span>(title_tenure_years)) <span class="keyword">AS</span> title_tenure,
+  <span class="keyword">ROUND</span>(<span class="keyword">AVG</span>(salary)) <span class="keyword">AS</span> avg_salary,
+  <span class="keyword">ROUND</span>(<span class="keyword">AVG</span>(salary_percentage_change)) <span class="keyword">AS</span> avg_salary_percentage_change,
+  <span class="comment">-- salary statistics</span>
+  <span class="keyword">ROUND</span>(<span class="keyword">MIN</span>(salary)) <span class="keyword">AS</span> min_salary,
+  <span class="keyword">ROUND</span>(<span class="keyword">MAX</span>(salary)) <span class="keyword">AS</span> max_salary,
+  <span class="keyword">ROUND</span>(
+    <span class="keyword">PERCENTILE_CONT</span>(0.5) <span class="keyword">WITHIN GROUP</span> (<span class="keyword">ORDER BY</span> salary)) <span class="keyword">AS</span> median_salary,
+  <span class="keyword">ROUND</span>(
+    <span class="keyword">PERCENTILE_CONT</span>(0.75) <span class="keyword">WITHIN GROUP</span> (<span class="keyword">ORDER BY</span> salary) -
+    <span class="keyword">PERCENTILE_CONT</span>(0.25) <span class="keyword">WITHIN GROUP</span> (<span class="keyword">ORDER BY</span> salary)
+  ) <span class="keyword">AS</span> inter_quartile_range,
+  <span class="keyword">ROUND</span>(<span class="keyword">STDDEV</span>(salary)) <span class="keyword">AS</span> stddev_salary
+<span class="keyword">FROM</span> mv_employees.current_employee_snapshot
+<span class="keyword">GROUP BY</span>
+  gender, title;
+
+<span class="comment">/*-----------------------</span>
+<span class="comment">Salary Benchmark Views</span>
+<span class="comment">-------------------------*/</span>
+
+<span class="keyword">DROP VIEW IF EXISTS</span> mv_employees.tenure_benchmark;
+<span class="keyword">CREATE VIEW</span> mv_employees.tenure_benchmark <span class="keyword">AS</span>
+<span class="keyword">SELECT</span>
+  company_tenure_years,
+  <span class="keyword">AVG</span>(salary) <span class="keyword">AS</span> tenure_benchmark_salary
+<span class="keyword">FROM</span> mv_employees.current_employee_snapshot
+<span class="keyword">GROUP BY</span> company_tenure_years;
+
+<span class="keyword">DROP VIEW IF EXISTS</span> mv_employees.gender_benchmark;
+<span class="keyword">CREATE VIEW</span> mv_employees.gender_benchmark <span class="keyword">AS</span>
+<span class="keyword">SELECT</span>
+  gender,
+  <span class="keyword">AVG</span>(salary) <span class="keyword">AS</span> gender_benchmark_salary
+<span class="keyword">FROM</span> mv_employees.current_employee_snapshot
+<span class="keyword">GROUP BY</span> gender;
+
+<span class="keyword">DROP VIEW IF EXISTS</span> mv_employees.department_benchmark;
+<span class="keyword">CREATE VIEW</span> mv_employees.department_benchmark <span class="keyword">AS</span>
+<span class="keyword">SELECT</span>
+  department,
+  <span class="keyword">AVG</span>(salary) <span class="keyword">AS</span> department_benchmark_salary
+<span class="keyword">FROM</span> mv_employees.current_employee_snapshot
+<span class="keyword">GROUP BY</span> department;
+
+<span class="keyword">DROP VIEW IF EXISTS</span> mv_employees.title_benchmark;
+<span class="keyword">CREATE VIEW</span> mv_employees.title_benchmark <span class="keyword">AS</span>
+<span class="keyword">SELECT</span>
+  title,
+  <span class="keyword">AVG</span>(salary) <span class="keyword">AS</span> title_benchmark_salary
+<span class="keyword">FROM</span> mv_employees.current_employee_snapshot
+<span class="keyword">GROUP BY</span> title;
+
+
+<span class="comment">/*----------------------------------</span>
+<span class="comment">1. Historic Employee Deep Dive View</span>
+<span class="comment">-----------------------------------*/</span>
+
+<span class="keyword">DROP VIEW IF EXISTS</span> mv_employees.historic_employee_records <span class="keyword">CASCADE</span>;
+<span class="keyword">CREATE VIEW</span> mv_employees.historic_employee_records <span class="keyword">AS</span>
+<span class="keyword">WITH</span> cte_previous_salary <span class="keyword">AS</span> (
+  <span class="keyword">SELECT</span>
+    employee_id,
+    amount
+  <span class="keyword">FROM</span> (
+    <span class="keyword">SELECT</span>
+      employee_id,
+      to_date,
+      <span class="keyword">LAG</span>(amount) <span class="keyword">OVER</span> (
+        <span class="keyword">PARTITION BY</span> employee_id
+        <span class="keyword">ORDER BY</span> from_date
+      ) <span class="keyword">AS</span> amount,
+      <span class="keyword">ROW_NUMBER</span>() <span class="keyword">OVER</span> (
+        <span class="keyword">PARTITION BY</span> employee_id
+        <span class="keyword">ORDER BY</span> to_date <span class="keyword">DESC</span>
+      ) <span class="keyword">AS</span> record_rank
+    <span class="keyword">FROM</span> mv_employees.salary
+  ) all_salaries
+  <span class="keyword">WHERE</span> record_rank = 1
+),
+cte_join_data <span class="keyword">AS</span> (
+<span class="keyword">SELECT</span>
+  employee.id <span class="keyword">AS</span> employee_id,
+  employee.birth_date,
+  <span class="comment">-- calculated employee_age field</span>
+  <span class="keyword">DATE_PART</span>(<span class="string">'year'</span>, <span class="keyword">now</span>()) -
+    <span class="keyword">DATE_PART</span>(<span class="string">'year'</span>, employee.birth_date) <span class="keyword">AS</span> employee_age,
+  <span class="comment">-- employee full name</span>
+  <span class="keyword">CONCAT_WS</span>(<span class="string">' '</span>, employee.first_name, employee.last_name) <span class="keyword">AS</span> employee_name,
+  employee.gender,
+  employee.hire_date,
+  title.title,
+  salary.amount <span class="keyword">AS</span> salary,
+  cte_previous_salary.amount <span class="keyword">AS</span> previous_latest_salary,
+  department.dept_name <span class="keyword">AS</span> department,
+  <span class="comment">-- use the `manager` aliased version of employee table for manager</span>
+  <span class="keyword">CONCAT_WS</span>(<span class="string">' '</span>, manager.first_name, manager.last_name) <span class="keyword">AS</span> manager,
+  <span class="comment">-- calculated tenure fields</span>
+  <span class="keyword">DATE_PART</span>(<span class="string">'year'</span>, <span class="keyword">now</span>()) -
+    <span class="keyword">DATE_PART</span>(<span class="string">'year'</span>, employee.hire_date) <span class="keyword">AS</span> company_tenure_years,
+  <span class="keyword">DATE_PART</span>(<span class="string">'year'</span>, <span class="keyword">now</span>()) -
+    <span class="keyword">DATE_PART</span>(<span class="string">'year'</span>, title.from_date) <span class="keyword">AS</span> title_tenure_years,
+  <span class="keyword">DATE_PART</span>(<span class="string">'year'</span>, <span class="keyword">now</span>()) -
+    <span class="keyword">DATE_PART</span>(<span class="string">'year'</span>, department_employee.from_date) <span class="keyword">AS</span> department_tenure_years,
+  <span class="comment">-- we also need to use AGE & DATE_PART functions here to generate month diff</span>
+  <span class="keyword">DATE_PART</span>(<span class="string">'months'</span>, <span class="keyword">AGE</span>(<span class="keyword">now</span>(), title.from_date)) <span class="keyword">AS</span> title_tenure_months,
+  <span class="keyword">GREATEST</span>(
+    title.from_date,
+    salary.from_date,
+    department_employee.from_date,
+    department_manager.from_date
+  ) <span class="keyword">AS</span> effective_date,
+  <span class="keyword">LEAST</span>(
+    title.to_date,
+    salary.to_date,
+    department_employee.to_date,
+    department_manager.to_date
+  ) <span class="keyword">AS</span> expiry_date
+<span class="keyword">FROM</span> mv_employees.employee
+<span class="keyword">INNER JOIN</span> mv_employees.title
+  <span class="keyword">ON</span> employee.id = title.employee_id
+<span class="keyword">INNER JOIN</span> mv_employees.salary
+  <span class="keyword">ON</span> employee.id = salary.employee_id
+<span class="keyword">INNER JOIN</span> mv_employees.department_employee
+  <span class="keyword">ON</span> employee.id = department_employee.employee_id
+<span class="keyword">INNER JOIN</span> mv_employees.department
+  <span class="keyword">ON</span> department_employee.department_id = department.id
+<span class="keyword">INNER JOIN</span> mv_employees.department_manager
+  <span class="keyword">ON</span> department.id = department_manager.department_id
+<span class="keyword">INNER JOIN</span> mv_employees.employee <span class="keyword">AS</span> manager
+  <span class="keyword">ON</span> department_manager.employee_id = manager.id
+<span class="keyword">INNER JOIN</span> cte_previous_salary
+  <span class="keyword">ON</span> mv_employees.employee.id = cte_previous_salary.employee_id
+),
+cte_ordered_transactions <span class="keyword">AS</span> (
+  <span class="keyword">SELECT</span>
+    employee_id,
+    birth_date,
+    employee_age,
+    employee_name,
+    gender,
+    hire_date,
+    title,
+    <span class="keyword">LAG</span>(title) <span class="keyword">OVER</span> w <span class="keyword">AS</span> previous_title,
+    salary,
+    previous_latest_salary,
+    <span class="keyword">LAG</span>(salary) <span class="keyword">OVER</span> w <span class="keyword">AS</span> previous_salary,
+    department,
+    <span class="keyword">LAG</span>(department) <span class="keyword">OVER</span> w <span class="keyword">AS</span> previous_department,
+    manager,
+    <span class="keyword">LAG</span>(manager) <span class="keyword">OVER</span> w <span class="keyword">AS</span> previous_manager,
+    company_tenure_years,
+    title_tenure_years,
+    title_tenure_months,
+    department_tenure_years,
+    effective_date,
+    expiry_date,
+    <span class="keyword">ROW_NUMBER</span>() <span class="keyword">OVER</span> (
+      <span class="keyword">PARTITION BY</span> employee_id
+      <span class="keyword">ORDER BY</span> effective_date <span class="keyword">DESC</span>
+    ) <span class="keyword">AS</span> event_order
+  <span class="keyword">FROM</span> cte_join_data
+  <span class="keyword">WHERE</span> effective_date <= expiry_date
+  <span class="keyword">WINDOW</span>
+    w <span class="keyword">AS</span> (<span class="keyword">PARTITION BY</span> employee_id <span class="keyword">ORDER BY</span> effective_date)
+),
+final_output <span class="keyword">AS</span> (
+  <span class="keyword">SELECT</span>
+    base.employee_id,
+    base.gender,
+    base.birth_date,
+    base.employee_age,
+    base.hire_date,
+    base.title,
+    base.employee_name,
+    base.previous_title,
+    base.salary,
+    previous_latest_salary,
+    base.previous_salary,
+    base.department,
+    base.previous_department,
+    base.manager,
+    base.previous_manager,
+    <span class="comment">-- tenure metrics</span>
+    base.company_tenure_years,
+    base.title_tenure_years,
+    base.title_tenure_months,
+    base.department_tenure_years,
+    base.event_order,
+    <span class="keyword">CASE</span>
+      <span class="keyword">WHEN</span> event_order = 1
+        <span class="keyword">THEN</span> <span class="keyword">ROUND</span>(
+          100 * (base.salary - base.previous_latest_salary) /
+            base.previous_latest_salary::<span class="keyword">NUMERIC</span>,
+          2
+        )
+      <span class="keyword">ELSE</span> <span class="keyword">NULL</span>
+    <span class="keyword">END</span> <span class="keyword">AS</span> latest_salary_percentage_change,
+    <span class="keyword">CASE</span>
+      <span class="keyword">WHEN</span> event_order = 1
+        <span class="keyword">THEN</span> <span class="keyword">ROUND</span>(
+          base.salary - base.previous_latest_salary
+        )
+      <span class="keyword">ELSE</span> <span class="keyword">NULL</span>
+    <span class="keyword">END</span> <span class="keyword">AS</span> latest_salary_amount_change,
+    <span class="keyword">CASE</span>
+      <span class="keyword">WHEN</span> base.previous_salary < base.salary
+        <span class="keyword">THEN</span> <span class="string">'Salary Increase'</span>
+      <span class="keyword">WHEN</span> base.previous_salary > base.salary
+        <span class="keyword">THEN</span> <span class="string">'Salary Decrease'</span>
+      <span class="keyword">WHEN</span> base.previous_department <> base.department
+        <span class="keyword">THEN</span> <span class="string">'Dept Transfer'</span>
+      <span class="keyword">WHEN</span> base.previous_manager <> base.manager
+        <span class="keyword">THEN</span> <span class="string">'Reporting Line Change'</span>
+      <span class="keyword">WHEN</span> base.previous_title <> base.title
+        <span class="keyword">THEN</span> <span class="string">'Title Change'</span>
+      <span class="keyword">ELSE</span> <span class="keyword">NULL</span>
+    <span class="keyword">END</span> <span class="keyword">AS</span> event_name,
+    <span class="comment">-- salary change</span>
+    <span class="keyword">ROUND</span>(base.salary - base.previous_salary) <span class="keyword">AS</span> salary_amount_change,
+    <span class="keyword">ROUND</span>(
+      100 * (base.salary - base.previous_salary) / base.previous_salary::<span class="keyword">NUMERIC</span>,
+      2
+    ) <span class="keyword">AS</span> salary_percentage_change,
+    <span class="comment">-- tenure</span>
+    <span class="keyword">ROUND</span>(tenure_benchmark_salary) <span class="keyword">AS</span> tenure_benchmark_salary,
+    <span class="keyword">ROUND</span>(
+      100 * (base.salary - tenure_benchmark_salary)
+        / tenure_benchmark_salary::<span class="keyword">NUMERIC</span>
+    ) <span class="keyword">AS</span> tenure_comparison,
+    <span class="comment">-- title</span>
+    <span class="keyword">ROUND</span>(title_benchmark_salary) <span class="keyword">AS</span> title_benchmark_salary,
+    <span class="keyword">ROUND</span>(
+      100 * (base.salary - title_benchmark_salary)
+        / title_benchmark_salary::<span class="keyword">NUMERIC</span>
+    ) <span class="keyword">AS</span> title_comparison,
+    <span class="comment">-- department</span>
+    <span class="keyword">ROUND</span>(department_benchmark_salary) <span class="keyword">AS</span> department_benchmark_salary,
+    <span class="keyword">ROUND</span>(
+      100 * (salary - department_benchmark_salary)
+        / department_benchmark_salary::<span class="keyword">NUMERIC</span>
+    ) <span class="keyword">AS</span> department_comparison,
+    <span class="comment">-- gender</span>
+    <span class="keyword">ROUND</span>(gender_benchmark_salary) <span class="keyword">AS</span> gender_benchmark_salary,
+    <span class="keyword">ROUND</span>(
+      100 * (base.salary - gender_benchmark_salary)
+        / gender_benchmark_salary::<span class="keyword">NUMERIC</span>
+    ) <span class="keyword">AS</span> gender_comparison,
+    base.effective_date,
+    base.expiry_date
+  <span class="keyword">FROM</span> cte_ordered_transactions <span class="keyword">AS</span> base
+  <span class="keyword">INNER JOIN</span> mv_employees.tenure_benchmark
+    <span class="keyword">ON</span> base.company_tenure_years = tenure_benchmark.company_tenure_years
+  <span class="keyword">INNER JOIN</span> mv_employees.title_benchmark
+    <span class="keyword">ON</span> base.title = title_benchmark.title
+  <span class="keyword">INNER JOIN</span> mv_employees.department_benchmark
+    <span class="keyword">ON</span> base.department = department_benchmark.department
+  <span class="keyword">INNER JOIN</span> mv_employees.gender_benchmark
+    <span class="keyword">ON</span> base.gender = gender_benchmark.gender
+
+)
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> final_output;
+
+<span class="comment">-- by keeping only the 5 latest events</span>
+<span class="keyword">DROP VIEW IF EXISTS</span> mv_employees.employee_deep_dive;
+<span class="keyword">CREATE VIEW</span> mv_employees.employee_deep_dive <span class="keyword">AS</span>
+<span class="keyword">SELECT</span> *
+<span class="keyword">FROM</span> mv_employees.historic_employee_records
+<span class="keyword">WHERE</span> event_order <= 5;
+</pre>
+
+        </div>
+        <h5 id="content-results">2.2 Results 📊</h5>
+        <div class = "2.2">
+
+
+        <h6>⭐ Department Level Results</h6>
+            <pre class="sql-query">
+<span class="keyword">SELECT</span> * 
+<span class="keyword">FROM</span> mv_employees.department_level_dashboard
+<span class="keyword">ORDER BY</span> department, gender;
+</pre>
+
+<p>Results:</p>
+<table>
+  <thead>
+    <tr>
+      <th>gender</th>
+      <th>department</th>
+      <th>employee_count</th>
+      <th>employee_percentage</th>
+      <th>department_tenure</th>
+      <th>avg_salary</th>
+      <th>avg_salary_percentage_change</th>
+      <th>min_salary</th>
+      <th>max_salary</th>
+      <th>median_salary</th>
+      <th>inter_quartile_range</th>
+      <th>stddev_salary</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>M</td>
+      <td>Customer Service</td>
+      <td>10562</td>
+      <td>60</td>
+      <td>9</td>
+      <td>67203</td>
+      <td>3</td>
+      <td>39373</td>
+      <td>143950</td>
+      <td>65100</td>
+      <td>20097</td>
+      <td>15921</td>
+    </tr>
+    <tr>
+      <td>F</td>
+      <td>Customer Service</td>
+      <td>7007</td>
+      <td>40</td>
+      <td>9</td>
+      <td>67409</td>
+      <td>3</td>
+      <td>39812</td>
+      <td>144866</td>
+      <td>65198</td>
+      <td>20450</td>
+      <td>15979</td>
+    </tr>
+    <tr>
+      <td>M</td>
+      <td>Development</td>
+      <td>36853</td>
+      <td>60</td>
+      <td>11</td>
+      <td>67713</td>
+      <td>3</td>
+      <td>39036</td>
+      <td>140784</td>
+      <td>66526</td>
+      <td>19664</td>
+      <td>14267</td>
+    </tr>
+    <tr>
+      <td>F</td>
+      <td>Development</td>
+      <td>24533</td>
+      <td>40</td>
+      <td>11</td>
+      <td>67576</td>
+      <td>3</td>
+      <td>39469</td>
+      <td>144434</td>
+      <td>66355</td>
+      <td>19309</td>
+      <td>14149</td>
+    </tr>
+    <tr>
+      <td>M</td>
+      <td>Finance</td>
+      <td>7423</td>
+      <td>60</td>
+      <td>11</td>
+      <td>78433</td>
+      <td>3</td>
+      <td>39012</td>
+      <td>142395</td>
+      <td>77526</td>
+      <td>24078</td>
+      <td>17242</td>
+    </tr>
+    <tr>
+      <td>F</td>
+      <td>Finance</td>
+      <td>5014</td>
+      <td>40</td>
+      <td>11</td>
+      <td>78747</td>
+      <td>3</td>
+      <td>39949</td>
+      <td>136978</td>
+      <td>78285</td>
+      <td>23576</td>
+      <td>16833</td>
+    </tr>
+    <tr>
+      <td>M</td>
+      <td>Human Resources</td>
+      <td>7751</td>
+      <td>60</td>
+      <td>11</td>
+      <td>63777</td>
+      <td>3</td>
+      <td>39611</td>
+      <td>141953</td>
+      <td>62864</td>
+      <td>17607</td>
+      <td>12843</td>
+    </tr>
+    <tr>
+      <td>F</td>
+      <td>Human Resources</td>
+      <td>5147</td>
+      <td>40</td>
+      <td>11</td>
+      <td>64140</td>
+      <td>3</td>
+      <td>38936</td>
+      <td>123268</td>
+      <td>62782</td>
+      <td>17674</td>
+      <td>12955</td>
+    </tr>
+    <tr>
+      <td>M</td>
+      <td>Marketing</td>
+      <td>8978</td>
+      <td>60</td>
+      <td>10</td>
+      <td>80293</td>
+      <td>3</td>
+      <td>39821</td>
+      <td>145128</td>
+      <td>79481</td>
+      <td>24990</td>
+      <td>17480</td>
+    </tr>
+    <tr>
+      <td>F</td>
+      <td>Marketing</td>
+      <td>5864</td>
+      <td>40</td>
+      <td>10</td>
+      <td>79700</td>
+      <td>3</td>
+      <td>39871</td>
+      <td>141842</td>
+      <td>78596</td>
+      <td>24512</td>
+      <td>17293</td>
+    </tr>
+    <tr>
+      <td>M</td>
+      <td>Production</td>
+      <td>31911</td>
+      <td>60</td>
+      <td>10</td>
+      <td>67921</td>
+      <td>3</td>
+      <td>38623</td>
+      <td>132552</td>
+      <td>66768</td>
+      <td>19662</td>
+      <td>14271</td>
+    </tr>
+    <tr>
+      <td>F</td>
+      <td>Production</td>
+      <td>21393</td>
+      <td>40</td>
+      <td>10</td>
+      <td>67728</td>
+      <td>3</td>
+      <td>39476</td>
+      <td>138273</td>
+      <td>66645</td>
+      <td>19485</td>
+      <td>14099</td>
+    </tr>
+    <tr>
+      <td>M</td>
+      <td>Quality Management</td>
+      <td>8674</td>
+      <td>60</td>
+      <td>10</td>
+      <td>65361</td>
+      <td>3</td>
+      <td>38942</td>
+      <td>132103</td>
+      <td>64258</td>
+      <td>18465</td>
+      <td>13402</td>
+    </tr>
+    <tr>
+      <td>F</td>
+      <td>Quality Management</td>
+      <td>5872</td>
+      <td>40</td>
+      <td>10</td>
+      <td>65562</td>
+      <td>3</td>
+      <td>39571</td>
+      <td>122965</td>
+      <td>64685</td>
+      <td>18386</td>
+      <td>13259</td>
+    </tr>
+    <tr>
+      <td>M</td>
+      <td>Research</td>
+      <td>9260</td>
+      <td>60</td>
+      <td>10</td>
+      <td>67848</td>
+      <td>3</td>
+      <td>39186</td>
+      <td>130211</td>
+      <td>66576</td>
+      <td>19749</td>
+      <td>14435</td>
+    </tr>
+    <tr>
+      <td>F</td>
+      <td>Research</td>
+      <td>6181</td>
+      <td>40</td>
+      <td>10</td>
+      <td>68012</td>
+      <td>3</td>
+      <td>39526</td>
+      <td>124158</td>
+      <td>66814</td>
+      <td>19100</td>
+      <td>14252</td>
+    </tr>
+    <tr>
+      <td>M</td>
+      <td>Sales</td>
+      <td>22702</td>
+      <td>60</td>
+      <td>11</td>
+      <td>88864</td>
+      <td>2</td>
+      <td>39426</td>
+      <td>158220</td>
+      <td>88462</td>
+      <td>24401</td>
+      <td>17757</td>
+    </tr>
+    <tr>
+      <td>F</td>
+      <td>Sales</td>
+      <td>14999</td>
+      <td>40</td>
+      <td>11</td>
+      <td>88836</td>
+      <td>2</td>
+      <td>40392</td>
+      <td>152710</td>
+      <td>88581</td>
+      <td>24712</td>
+      <td>17738</td>
+    </tr>
+  </tbody>
+</table>
+        <h6>⭐ Title Level Results</h6>
+            <pre class="sql-query">
+<span class="keyword">SELECT</span> * 
+<span class="keyword">FROM</span> mv_employees.title_level_dashboard
+<span class="keyword">ORDER BY</span> title, gender;
+</pre>
+<p>Results:</p>
+<table>
+    <tr>
+        <th>Gender</th>
+        <th>Title</th>
+        <th>Employee Count</th>
+        <th>Employee Percentage</th>
+        <th>Title Tenure</th>
+        <th>Avg Salary</th>
+        <th>Avg Salary Percentage Change</th>
+        <th>Min Salary</th>
+        <th>Max Salary</th>
+        <th>Median Salary</th>
+        <th>Inter Quartile Range</th>
+        <th>Stddev Salary</th>
+    </tr>
+    <tr>
+        <td>M</td>
+        <td>Assistant Engineer</td>
+        <td>2148</td>
+        <td>60</td>
+        <td>6</td>
+        <td>57198</td>
+        <td>4</td>
+        <td>39827</td>
+        <td>117636</td>
+        <td>54384</td>
+        <td>14972</td>
+        <td>11152</td>
+    </tr>
+    <tr>
+        <td>F</td>
+        <td>Assistant Engineer</td>
+        <td>1440</td>
+        <td>40</td>
+        <td>6</td>
+        <td>57496</td>
+        <td>4</td>
+        <td>39469</td>
+        <td>106340</td>
+        <td>55234</td>
+        <td>14679</td>
+        <td>10805</td>
+    </tr>
+    <tr>
+        <td>M</td>
+        <td>Engineer</td>
+        <td>18571</td>
+        <td>60</td>
+        <td>6</td>
+        <td>59593</td>
+        <td>4</td>
+        <td>38942</td>
+        <td>130939</td>
+        <td>56941</td>
+        <td>17311</td>
+        <td>12416</td>
+    </tr>
+    <tr>
+        <td>F</td>
+        <td>Engineer</td>
+        <td>12412</td>
+        <td>40</td>
+        <td>6</td>
+        <td>59617</td>
+        <td>4</td>
+        <td>39519</td>
+        <td>115444</td>
+        <td>57220</td>
+        <td>17223</td>
+        <td>12211</td>
+    </tr>
+    <tr>
+        <td>M</td>
+        <td>Manager</td>
+        <td>5</td>
+        <td>56</td>
+        <td>9</td>
+        <td>79351</td>
+        <td>2</td>
+        <td>56654</td>
+        <td>106491</td>
+        <td>72876</td>
+        <td>43242</td>
+        <td>23615</td>
+    </tr>
+    <tr>
+        <td>F</td>
+        <td>Manager</td>
+        <td>4</td>
+        <td>44</td>
+        <td>12</td>
+        <td>75690</td>
+        <td>3</td>
+        <td>65400</td>
+        <td>83457</td>
+        <td>76952</td>
+        <td>8176</td>
+        <td>7774</td>
+    </tr>
+    <tr>
+        <td>M</td>
+        <td>Senior Engineer</td>
+        <td>51533</td>
+        <td>60</td>
+        <td>7</td>
+        <td>70870</td>
+        <td>3</td>
+        <td>39285</td>
+        <td>140784</td>
+        <td>69509</td>
+        <td>18081</td>
+        <td>13596</td>
+    </tr>
+    <tr>
+        <td>F</td>
+        <td>Senior Engineer</td>
+        <td>34406</td>
+        <td>40</td>
+        <td>8</td>
+        <td>70754</td>
+        <td>3</td>
+        <td>39476</td>
+        <td>138273</td>
+        <td>69478</td>
+        <td>17918</td>
+        <td>13494</td>
+    </tr>
+    <tr>
+        <td>M</td>
+        <td>Senior Staff</td>
+        <td>49232</td>
+        <td>60</td>
+        <td>7</td>
+        <td>80735</td>
+        <td>3</td>
+        <td>39012</td>
+        <td>158220</td>
+        <td>78704</td>
+        <td>27310</td>
+        <td>18679</td>
+    </tr>
+    <tr>
+        <td>F</td>
+        <td>Senior Staff</td>
+        <td>32792</td>
+        <td>40</td>
+        <td>7</td>
+        <td>80663</td>
+        <td>3</td>
+        <td>39227</td>
+        <td>152710</td>
+        <td>78617</td>
+        <td>27406</td>
+        <td>18621</td>
+    </tr>
+    <tr>
+        <td>M</td>
+        <td>Staff</td>
+        <td>15436</td>
+        <td>60</td>
+        <td>6</td>
+        <td>67362</td>
+        <td>3</td>
+        <td>39186</td>
+        <td>133577</td>
+        <td>65120</td>
+        <td>27388</td>
+        <td>17193</td>
+    </tr>
+    <tr>
+        <td>F</td>
+        <td>Staff</td>
+        <td>10090</td>
+        <td>40</td>
+        <td>6</td>
+        <td>67282</td>
+        <td>3</td>
+        <td>38936</td>
+        <td>137875</td>
+        <td>65110</td>
+        <td>26470</td>
+        <td>16815</td>
+    </tr>
+    <tr>
+        <td>M</td>
+        <td>Technique Leader</td>
+        <td>7189</td>
+        <td>60</td>
+        <td>11</td>
+        <td>67600</td>
+        <td>3</td>
+        <td>38623</td>
+        <td>132233</td>
+        <td>66558</td>
+        <td>19162</td>
+        <td>14087</td>
+    </tr>
+    <tr>
+        <td>F</td>
+        <td>Technique Leader</td>
+        <td>4866</td>
+        <td>40</td>
+        <td>11</td>
+        <td>67369</td>
+        <td>3</td>
+        <td>39812</td>
+        <td>144434</td>
+        <td>66174</td>
+        <td>18710</td>
+        <td>13939</td>
+    </tr>
+</table>
+
+        <h6>⭐ Salary Benchmark Results </h6>
+        <h6>1.Company Tenure Benchmark</h6>
+            <pre class="sql-query">
+<span class="keyword">SELECT</span> * 
+<span class="keyword">FROM</span> mv_employees.tenure_benchmark
+<span class="keyword">ORDER BY</span> company_tenure_years;
+</pre>
+<p> Results: </p>
+<table>
+  <tr>
+    <td>company_tenure_years</td>
+    <td>tenure_benchmark_salary</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>58192.111111111111</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>58199.38122923588</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>5880559673.06020469</td>
+  </tr>
+  <tr>
+    <td>6</td>
+    <td>5966660794.59939531</td>
+  </tr>
+  <tr>
+    <td>7</td>
+    <td>3681762424.67458556</td>
+  </tr>
+  <tr>
+    <td>8</td>
+    <td>3242863705.12614184</td>
+  </tr>
+  <tr>
+    <td>9</td>
+    <td>5427965332.55085387</td>
+  </tr>
+  <tr>
+    <td>10</td>
+    <td>39801067090.80016693</td>
+  </tr>
+  <tr>
+    <td>11</td>
+    <td>32961168286.07106038</td>
+  </tr>
+  <tr>
+    <td>12</td>
+    <td>29161269812.80344427</td>
+  </tr>
+  <tr>
+    <td>13</td>
+    <td>88541371483.85741547</td>
+  </tr>
+  <tr>
+    <td>14</td>
+    <td>19381473053.44542307</td>
+  </tr>
+  <tr>
+    <td>15</td>
+    <td>52381574201.56035477</td>
+  </tr>
+  <tr>
+    <td>16</td>
+    <td>07121675927.58821765</td>
+  </tr>
+  <tr>
+    <td>17</td>
+    <td>85221777411.44632454</td>
+  </tr>
+  <tr>
+    <td>18</td>
+    <td>92371878870.31624898</td>
+  </tr>
+</table>
+
+<h6>2. Gender Benchmark</h6>
+<pre class="sql-query"><span class="keyword">SELECT</span> * <span class="keyword">
+FROM</span> mv_employees.gender_benchmark;</pre>
+<p> Results: </p>
+<table>
+  <tr>
+    <td>gender</td>
+    <td>gender_benchmark_salary</td>
+  </tr>
+  <tr>
+    <td>M</td>
+    <td>72044.656972951969</td>
+  </tr>
+  <tr>
+    <td>F</td>
+    <td>71963.570753046558</td>
+  </tr>
+</table>
+
+<h6>3. Department Benchmark</h6>
+<pre class="sql-query"><span class="keyword">SELECT</span> * <span class="keyword">
+FROM</span> mv_employees.department_benchmark <span class="keyword">
+ORDER BY</span> department_benchmark_salary <span class="keyword">DESC</span>;</pre>
+<p> Results: </p>
+<table>
+  <tr>
+    <td>department</td>
+    <td>department_benchmark_salary</td>
+  </tr>
+  <tr>
+    <td>Sales</td>
+    <td>88852.969470305827</td>
+  </tr>
+  <tr>
+    <td>Marketing</td>
+    <td>80058.848807438351</td>
+  </tr>
+  <tr>
+    <td>Finance</td>
+    <td>78559.936962289941</td>
+  </tr>
+  <tr>
+    <td>Research</td>
+    <td>67913.374975714008</td>
+  </tr>
+  <tr>
+    <td>Production</td>
+    <td>67843.301984841663</td>
+  </tr>
+  <tr>
+    <td>Development</td>
+    <td>67657.919558205454</td>
+  </tr>
+  <tr>
+    <td>Customer Service</td>
+    <td>67285.230178154704</td>
+  </tr>
+  <tr>
+    <td>Quality Management</td>
+    <td>65441.993400247491</td>
+  </tr>
+  <tr>
+    <td>Human Resources</td>
+    <td>63921.899829430920</td>
+  </tr>
+</table>
+
+<h6>4. Title Benchmark</h6>
+<pre class="sql-query"><span class="keyword">SELECT</span> * <span class="keyword">
+FROM</span> mv_employees.title_benchmark <span class="keyword">
+ORDER BY</span> title_benchmark_salary <span class="keyword">DESC</span>;</pre>
+<p> Results: </p>
+<table>
+  <tr>
+    <td>title</td>
+    <td>title_benchmark_salary</td>
+  </tr>
+  <tr>
+    <td>Senior Staff</td>
+    <td>80706.495879254852</td>
+  </tr>
+  <tr>
+    <td>Manager</td>
+    <td>77723.666666666667</td>
+  </tr>
+  <tr>
+    <td>Senior Engineer</td>
+    <td>70823.437647633787</td>
+  </tr>
+  <tr>
+    <td>Technique Leader</td>
+    <td>67506.590294483617</td>
+  </tr>
+  <tr>
+    <td>Staff</td>
+    <td>67330.665204105618</td>
+  </tr>
+  <tr>
+    <td>Engineer</td>
+    <td>59602.737759416454</td>
+  </tr>
+  <tr>
+    <td>Assistant Engineer</td>
+    <td>57317.573578595318</td>
+  </tr>
+</table>
+
+<h6>⭐ Historic Employee Deep Dive Example</h6>
+<pre class="sql-query"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> mv_employees.employee_deep_dive
+<span class="keyword">WHERE</span> employee_name =<span class="string"> 'Leah Anguita'</span>
+<span class="keyword">ORDER BY</span> event_order;</pre>
+<p> Results: </p>
+
+<table id="Table2">
+  <tr>
+    <th>employee_id</th>
+    <th>gender</th>
+    <th>birth_date</th>
+    <th>employee_age</th>
+    <th>hire_date</th>
+    <th>title</th>
+    <th>employee_name</th>
+    <th>previous_title</th>
+    <th>salary</th>
+    <th>previous_latest_salary</th>
+    <th>previous_salary</th>
+    <th>department</th>
+    <th>previous_department</th>
+    <th>manager</th>
+    <th>previous_manager</th>
+    <th>company_tenure_years</th>
+    <th>title_tenure_years</th>
+    <th>title_tenure_months</th>
+    <th>department_tenure_years</th>
+    <th>event_order</th>
+    <th>latest_salary_percentage_change</th>
+    <th>event_name</th>
+    <th>salary_amount_change</th>
+    <th>salary_percentage_change</th>
+    <th>tenure_benchmark_salary</th>
+    <th>tenure_comparison</th>
+    <th>title_benchmark_salary</th>
+    <th>title_comparison</th>
+    <th>department_benchmark_salary</th>
+    <th>department_comparison</th>
+    <th>gender_benchmark_salary</th>
+    <th>gender_comparison</th>
+    <th>effective_date</th>
+    <th>expiry_date</th>
+  </tr>
+  <tr>
+    <td>11669</td>
+    <td>M</td>
+    <td>3/3/1975</td>
+    <td>46</td>
+    <td>4/7/2004</td>
+    <td>Senior Engineer</td>
+    <td>Leah Anguita</td>
+    <td>Engineer</td>
+    <td>47373</td>
+    <td>47046</td>
+    <td>47373</td>
+    <td>Customer Service</td>
+    <td>Customer Service</td>
+    <td>Yuchang Weedman</td>
+    <td>Yuchang Weedman</td>
+    <td>17</td>
+    <td>1</td>
+    <td>1</td>
+    <td>12</td>
+    <td>10</td>
+    <td>0.7</td>
+    <td>Title Change</td>
+    <td>0</td>
+    <td>77411-39</td>
+    <td>70823-33</td>
+    <td>67285-30</td>
+    <td>72045-34</td>
+    <td>5/12/2020</td>
+    <td>1/1/9999</td>
+  </tr>
+  <tr>
+    <td>11669</td>
+    <td>M</td>
+    <td>3/3/1975</td>
+    <td>46</td>
+    <td>4/7/2004</td>
+    <td>Engineer</td>
+    <td>Leah Anguita</td>
+    <td>Engineer</td>
+    <td>47373</td>
+    <td>47046</td>
+    <td>47046</td>
+    <td>Customer Service</td>
+    <td>Customer Service</td>
+    <td>Yuchang Weedman</td>
+    <td>Yuchang Weedman</td>
+    <td>17</td>
+    <td>6</td>
+    <td>1</td>
+    <td>12</td>
+    <td>2</td>
+    <td>0.7</td>
+    <td>Salary Increase</td>
+    <td>3270</td>
+    <td>77411-39</td>
+    <td>59603-21</td>
+    <td>67285-30</td>
+    <td>72045-34</td>
+    <td>5/11/2020</td>
+    <td>5/12/2020</td>
+  </tr>
+  <tr>
+    <td>11669</td>
+    <td>M</td>
+    <td>3/3/1975</td>
+    <td>46</td>
+    <td>4/7/2004</td>
+    <td>Engineer</td>
+    <td>Leah Anguita</td>
+    <td>Engineer</td>
+    <td>47046</td>
+    <td>47046</td>
+    <td>47046</td>
+    <td>Customer Service</td>
+    <td>Production</td>
+    <td>Yuchang Weedman</td>
+    <td>Oscar Ghazalie</td>
+    <td>17</td>
+    <td>6</td>
+    <td>1</td>
+    <td>12</td>
+    <td>3</td>
+    <td>0</td>
+    <td>Dept Transfer</td>
+    <td>0</td>
+    <td>77411-39</td>
+    <td>59603-21</td>
+    <td>67285-30</td>
+    <td>72045-35</td>
+    <td>6/12/2019</td>
+    <td>5/11/2020</td>
+  </tr>
+  <tr>
+    <td>11669</td>
+    <td>M</td>
+    <td>3/3/1975</td>
+    <td>46</td>
+    <td>4/7/2004</td>
+    <td>Engineer</td>
+    <td>Leah Anguita</td>
+    <td>Engineer</td>
+    <td>47046</td>
+    <td>47046</td>
+    <td>43681</td>
+    <td>Production</td>
+    <td>Production</td>
+    <td>Oscar Ghazalie</td>
+    <td>Oscar Ghazalie</td>
+    <td>17</td>
+    <td>6</td>
+    <td>1</td>
+    <td>1</td>
+    <td>6</td>
+    <td>7.7</td>
+    <td>Salary Increase</td>
+    <td>3365</td>
+    <td>77411-39</td>
+    <td>59603-21</td>
+    <td>67843-31</td>
+    <td>72045-35</td>
+    <td>5/11/2019</td>
+    <td>6/12/2019</td>
+  </tr>
+  <tr>
+    <td>11669</td>
+    <td>M</td>
+    <td>3/3/1975</td>
+    <td>46</td>
+    <td>4/7/2004</td>
+    <td>Engineer</td>
+    <td>Leah Anguita</td>
+    <td>Engineer</td>
+    <td>43681</td>
+    <td>47046</td>
+    <td>43930</td>
+    <td>Production</td>
+    <td>Production</td>
+    <td>Oscar Ghazalie</td>
+    <td>Oscar Ghazalie</td>
+    <td>17</td>
+    <td>6</td>
+    <td>1</td>
+    <td>1</td>
+    <td>6</td>
+    <td>-0.5</td>
+    <td>Salary Decrease</td>
+    <td>-249</td>
+    <td>777411-44</td>
+    <td>59603-27</td>
+    <td>67843-36</td>
+    <td>72045-39</td>
+    <td>5/11/2018</td>
+    <td>5/11/2019</td>
+  </tr>
+</table>
+
+
+
+
+
+
+</div>
+
+        </div>
 
 
     </div>

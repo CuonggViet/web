@@ -34,3 +34,5 @@ function addClickEvent(tocId, targetId) {
       console.log("TOC element not found for id:", tocId);
     }
 }
+
+
