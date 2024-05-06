@@ -32,7 +32,79 @@
 
     <section class="projects" id="projects">
         <h2 class="heading"> <span>People Analytics Case Study </span></h2>
-        <p style="font-size: 14px; text-align: center; font-family: medium-content-sans-serif-font, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-weight: 300;">  Figure 1: 2021 Financial Overview Dashboard </p>
+        <div class="container">
+          <video id="video-id" autoplay loop muted playsinline style="max-width:1500px; height: 700px; background-image: url('placeholder.jpg'); object-fit: cover;">
+              <source src="../images/subpage 6/vid.mp4" type="video/mp4">
+          </video>
+          <!-- 
+            <video id="video-id-2" autoplay loop muted playsinline style="max-width:500px; height: 700px; background-image: url('placeholder.jpg'); object-fit: cover;">
+                <source src="../images/subpage 6/vid.mp4" type="video/mp4">
+                </video>
+-->
+
+      </div>
+      
+       <!-- Intro -->
+       <h3>Introduction</h3>
+       <p>HR Analytica team requires a separate analytical view using a single SQL script for data assets, specifically focusing on individual employee deep dives. Our objective is to provide a holistic view of each employee's journey within the company, encompassing various facets such as:</p>
+   <ul>
+     <li>Employment history ordered by effective date, including salary, department, manager, and title changes.</li>
+     <li>Calculation of previous historic pay rise percentages and value changes.</li>
+     <li>Previous position and department history in months with start and end dates.</li>
+     <li>Comparison of an employee’s current salary, total company tenure, department, position, and gender to the average benchmarks for their current position.</li>
+   </ul>
+   <p>This comprehensive analysis is facilitated through three main components:</p>
+   <ol>
+     <li>Data Exploration: including the utilization of materialized views.</li>
+     <li>Problem-solving: Innovative solutions tailored to address specific challenges.</li>
+     <li>Visualization: Utilizing Tableau for intuitive presentation of insights.</li>
+   </ol>
+   <p>Special thanks to <a href="https://www.datawithdanny.com/" target="_blank">Data with Danny</a> by <a href="https://www.linkedin.com/in/datawithdanny/" target="_blank">Danny Ma </a>for providing both data resources and visualization ideas for this project.</p>
+   <br>
+       <div class='tableauPlaceholder' id='viz1715008850159' style='position: relative'>
+         <noscript>
+             <a href='#'>
+                 <img alt='Dashboard 1 ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;HR&#47;HRAnalatica&#47;Dashboard1&#47;1_rss.png' style='border: none' />
+             </a>
+         </noscript>
+         <object class='tableauViz' style='display:none;'>
+             <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
+             <param name='embed_code_version' value='3' />
+             <param name='site_root' value='' />
+             <param name='name' value='HRAnalatica&#47;Dashboard1' />
+             <param name='tabs' value='no' />
+             <param name='toolbar' value='yes' />
+             <param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;HR&#47;HRAnalatica&#47;Dashboard1&#47;1.png' />
+             <param name='animate_transition' value='yes' />
+             <param name='display_static_image' value='yes' />
+             <param name='display_spinner' value='yes' />
+             <param name='display_overlay' value='yes' />
+             <param name='display_count' value='yes' />
+             <param name='language' value='en-US' />
+             <param name='filter' value='publish=yes' />
+         </object>
+     </div>
+     <script type='text/javascript'>
+         var divElement = document.getElementById('viz1715008850159');
+         var vizElement = divElement.getElementsByTagName('object')[0];
+         if (divElement.offsetWidth > 800) {
+             vizElement.style.width='900px';
+             vizElement.style.height='1127px';
+         } else if (divElement.offsetWidth > 500) {
+             vizElement.style.width='900px';
+             vizElement.style.height='1127px';
+         } else {
+             vizElement.style.width='100%';
+             vizElement.style.height='3027px';
+         }
+         var scriptElement = document.createElement('script');
+         scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
+         vizElement.parentNode.insertBefore(scriptElement, vizElement);
+     </script>
+<br>
+<br>
+
+
 
 
 
@@ -41,22 +113,24 @@
         <!-- Table of Contents -->
 
     <h3>Table of contents</h3>
-        <h4 id="data-overview">1. Data Overview - Exploration 🕵️‍♂️</h4>
-            <h5 id="EDR">1.1 Entity Diagram Relationship 🔗</h5>
-            <h5 id="DE">1.2 Data Exploration 🔍</h5>
-            <h5 id="MV">1.3 Updates MATERIALIZED VIEW 🔄</h5>
+    <div style="background-color: #232323; padding: 10px; border-radius: 5px; text-align: left; width: 500px; height: 450px;">
+      <h4 id="data-overview">1. Data Overview - Exploration 🕵️‍♂️</h4>
+      <h5 id="EDR">1.1 Entity Diagram Relationship 🔗</h5>
+      <h5 id="DE">1.2 Data Exploration 🔍</h5>
+      <h5 id="MV">1.3 Updates MATERIALIZED VIEW 🔄</h5>
+  
+      <h4 id="solution">2. Problem Solving 💡</h4>
+      <h5 id="case-solution">2.1 Solution for the Case Study 💡</h5>
+      <h5 id="results">2.2 Results 📊</h5>
+  
+      <h4 id="visualization">3. Visualization on Tableau 📈</h4>
+  </div>
+  
+<br>
 
-        <h4 id="solution">2. Problem Solving 💡</h4>
-            <h5 id="case-solution">2.1 Solution for the Case Study 💡</h5>
-            <h5 id="results">2.2 Results 📊</h5>
 
-        <h4 id="visualization">3. Visualization on Tableau 📈</h4>
-
-
-
-       <!-- Intro -->
-    <h3>Introduction</h3>
-        <p>asdadwadsadwaas shaidohsaidho aoisdhiashdo a hdiashoid ha</p>
+  
+  
     
 
         <!-- Content Sections -->
@@ -534,6 +608,7 @@
             
             <p>This is the final script for the problem solution of this case study:
             </p>
+            <div style="overflow-x: auto; max-height: 1000px;">
             <pre class="sql-query">
 <span class="comment">/*-----------------------------------</span>
 <span class="comment">Current employee snapshot view</span>
@@ -943,7 +1018,7 @@ final_output <span class="keyword">AS</span> (
 <span class="keyword">FROM</span> mv_employees.historic_employee_records
 <span class="keyword">WHERE</span> event_order <= 5;
 </pre>
-
+</div>
         </div>
         <h5 id="content-results">2.2 Results 📊</h5>
         <div class = "2.2">
@@ -957,6 +1032,7 @@ final_output <span class="keyword">AS</span> (
 </pre>
 
 <p>Results:</p>
+<div style="overflow-x: auto; max-height: 500px;">
 <table>
   <thead>
     <tr>
@@ -1229,6 +1305,7 @@ final_output <span class="keyword">AS</span> (
     </tr>
   </tbody>
 </table>
+</div>
         <h6>⭐ Title Level Results</h6>
             <pre class="sql-query">
 <span class="keyword">SELECT</span> * 
@@ -1641,6 +1718,7 @@ ORDER BY</span> title_benchmark_salary <span class="keyword">DESC</span>;</pre>
 <span class="keyword">ORDER BY</span> event_order;</pre>
 <p> Results: </p>
 
+<div style="overflow-x: auto; max-height: 500px;">
 <table id="Table2">
   <tr>
     <th>employee_id</th>
@@ -1834,7 +1912,7 @@ ORDER BY</span> title_benchmark_salary <span class="keyword">DESC</span>;</pre>
     <td>5/11/2019</td>
   </tr>
 </table>
-
+</div>
 
 
 

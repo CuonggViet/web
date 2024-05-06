@@ -126,3 +126,40 @@ tbody tr:nth-child(even) {
 }
 
 
+/* CSS to center the Tableau visualization within its container */
+.tableauPlaceholder {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically if needed */
+  width: 100%; /* Ensures the container takes the full width */
+  height: auto; /* Adjusts automatically to content height */
+  margin: 0 auto; /* Additional assurance for horizontal centering */
+}
+
+.tableauViz {
+  width: 100%; /* Ensures the visualization fills the container */
+  max-width: 900px; /* Optional: Restrict maximum width if it looks too large */
+  height: auto; /* Adjusts to maintain aspect ratio */
+}
+
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Add margin between videos */
+video {
+  margin-right: 70px; /* Adjust as needed */
+}
+
+  /* Link styles */
+  .projects a {
+    color: #1a73e8;
+    text-decoration: none;
+  }
+  
+  .projects a:hover {
+    text-decoration: underline;
+  }
